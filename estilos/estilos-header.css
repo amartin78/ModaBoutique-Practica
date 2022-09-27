@@ -1,0 +1,177 @@
+header {
+    background-color: #607ec4;
+    color: white;
+    height: 7%;
+    padding: 1.2% 2% !important;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    line-height: 1;
+}
+
+.logo, .cuenta-cesta {
+    width: 34%;
+}
+
+#lupa {
+    display: none;
+    width: 1.4em;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.cuenta-cesta {
+    text-align: right;
+}
+
+header ul li {
+    display: inline-block;
+}
+
+header a {
+    text-decoration: none;
+    color: white;
+}
+
+header input {
+    border: none;
+    border-radius: 2em;
+    outline-color: rgb(0,0,0,0.7);
+    padding: 0.3em 1.1em;
+    font-size: 1.1em;
+    margin-right: -1em;
+}
+
+.logo span {
+    font-size: 1.8em;
+    vertical-align: middle;
+}
+
+.logo img {
+    width: 1.8em;
+    margin-right: 3%;
+    vertical-align: middle;
+}
+
+header li:nth-child(2) {
+    width: 12em;
+}
+
+header li:nth-child(2) img {
+    width: 14%;
+}
+
+header li:nth-child(3) {
+    width: 4em;
+}
+
+header li:nth-child(3) span {
+    margin-right: 0.2em;
+}
+
+header li:nth-child(3) img {
+    width: 40%;
+    vertical-align: bottom;
+}
+
+@media screen and (max-width: 1180px) {
+    
+    header input {
+        width: 18em;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    
+    header input {
+        width: 12em;
+    }
+}
+
+@media screen and (max-width: 920px) {
+    
+    header .logo img {
+        width: 1.6em;
+    }
+
+    header .logo span {
+        font-size: 1.4em;
+    }
+
+    header input {
+        width: 14em;
+        font-size: 0.8em;
+    }
+
+    header li:nth-child(2) {
+        width: 3em;
+    }
+
+    header li:nth-child(2) img {
+        width: 46%;
+    }
+
+    header ul li:nth-child(2) span {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    
+    header .logo {
+        width: 52%;
+    }
+
+    header input {
+        display: none;
+    }
+
+    #lupa {
+        display: block;
+    }
+
+    header li:nth-child(2) {
+        margin-right: 0.4em;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    header {
+        height: 5%;
+    }
+
+    header .logo img {
+        width: 1.2em;
+    }
+
+    header .logo span {
+        font-size: 1em;
+    }
+
+    #lupa {
+        width: 1em;
+    }
+
+    .cuenta-cesta {
+        width: 52%;
+    }
+
+    header li:nth-child(2) {
+        width: 2em;
+    }
+
+    header li:nth-child(3) {
+        width: 4em;
+    }
+
+}
+
+
+

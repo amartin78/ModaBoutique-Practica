@@ -1,0 +1,74 @@
+nav {
+    margin-bottom: 8vh;
+}
+
+nav::after, nav ul::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+nav ul li {
+    float: left;
+    width: 20%;
+    overflow: auto;
+    text-align: center;
+}
+
+nav li a {
+    background-color: #b7c5e8;
+    width: 100%;
+    display: block;
+    padding: 5% 0;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    text-decoration: none;
+    color: white;
+    font-size: 1.1em;
+}
+
+nav li:first-child a {
+    border-left: none;
+}
+
+nav li a:hover {
+    background-color: #e2e2bc;
+}
+
+nav li a:focus {
+    background-color: #e2e2bc;
+}
+
+@media screen and (max-width: 768px) {
+    
+    nav li a {
+        font-size: 1em;
+    }
+
+}
+
+@media screen and (max-width: 520px) {
+    
+    nav li a {
+        font-size: 0.8em;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+    
+    nav ul li {
+        float: none;
+        width: 100%;
+    }
+    
+    nav li a {
+        padding: 2.5% 0;
+        font-size: 0.8em;
+        border-style: none none solid none;
+    }
+
+}
+
+
+

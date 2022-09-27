@@ -1,0 +1,139 @@
+footer {
+    color: white;
+    background-color: #b7c5e8;
+    margin-top: 10vh;
+}
+
+.menus {
+    display: grid;
+    grid-template-columns: repeat(3, 22%);
+    justify-content: space-evenly;
+    padding: 2% 0;
+
+}
+
+.pago-pais {
+    display: grid;
+    grid-template-columns: repeat(2, 46%);
+    justify-content: space-between;
+}
+
+.legal {
+    background-color: #607ec4;
+    display: grid;
+    grid-template-columns: repeat(2, 46%);
+    justify-content: space-between;
+}
+
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer img {
+    width: 6%;
+}
+
+.menus div {
+    margin-left: 12%;
+}
+
+.menus h4 {
+    margin-bottom: 3%;
+}
+
+.menus li img {
+    vertical-align: middle;
+}
+
+.seguimiento li {
+    padding: 1% 0;
+}
+
+.pago-pais {
+    align-items: center;
+    padding: 0 3% 1%;
+}
+
+.pago-pais div:last-child {
+    text-align: right;
+}
+
+.pago-pais p {
+    display: inline-block;
+}
+
+.pago-pais img {
+    vertical-align: middle;
+}
+
+.pago-pais ul, .pago-pais li, .legal li {
+    display: inline;
+}
+
+.legal {
+    padding: 2% 3%;
+}
+
+.legal div:last-child {
+    text-align: right;
+}
+
+@media screen and (max-width: 768px) {
+
+    .pago-pais p {
+        display: block;
+    }
+
+    .pago-pais img {
+        width: 12%;
+    }
+
+    .menus h4 {
+        margin-bottom: 5%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    
+    footer {
+        padding-top: 1em;
+    }
+
+    .menus h4 {
+        margin-bottom: 3%;
+    }
+
+    .menus div {
+        margin: 0;
+    }
+
+    .menus, .pago-pais, .legal {
+        display: block;
+    }
+
+    .menus {
+        width: 60%;
+        margin: 0 auto;
+    }
+
+    .menus div:nth-child(n), .pago-pais div:nth-child(n), .legal div:nth-child(n) {
+        text-align: center;
+    }
+
+    .menus div:nth-child(n), .legal div:first-child, .pago-pais div:last-child {
+        margin-bottom: 1em;
+    }
+    
+    .pago-pais img {
+        width: 10%;
+    }
+    
+    .legal img {
+        width: 6%;
+    }
+}

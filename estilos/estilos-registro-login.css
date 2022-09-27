@@ -1,0 +1,123 @@
+main {
+    margin: 0 auto;
+    width: 25%;
+}
+
+h2 {
+    margin-bottom: 1em;
+}
+
+#contenedor-nueva-cuenta form, table,
+#contenedor-inicio-sesion form, table,
+#contenedor-cambio-contrasenia form, table 
+{
+    width: 100%;
+}
+
+#contenedor-nueva-cuenta label,
+#contenedor-inicio-sesion label,
+#contenedor-cambio-contrasenia label {
+    display: block;
+    margin-bottom: 0.4em;
+}
+
+td {
+    padding-bottom: 3.6%;
+}
+
+tr:last-child td {
+    text-align: right;
+    padding-top: 1%;
+}
+
+#contenedor-nueva-cuenta input::placeholder,
+#contenedor-inicio-sesion input::placeholder,
+#contenedor-cambio-contrasenia input::placeholder, input[type="date"] {
+    font-size: 1.2em;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+input[type="date"] {
+    color: #767676;
+    font-size: 1em;
+    padding: 0.2em 0.6em;
+}
+
+input {
+    width: 94%;
+    padding: 0.4em 0.6em;
+}
+
+input[type="checkbox"] {
+    width: 1em;
+}
+
+input[type="submit"] {
+    width: 8em;
+    height: 2.5em;
+    color: white;
+    border: none;
+    background-color: #f77613;
+}
+
+input[type="submit"]:hover {
+    background-color: #e2e2bc;
+    cursor: pointer;
+}
+
+#contenedor-nueva-cuenta > div a,
+#contenedor-inicio-sesion > div a, 
+#contenedor-cambio-contrasenia > div a 
+{
+    color: #333;
+}
+
+#contenedor-nueva-cuenta > div a:hover,
+#contenedor-inicio-sesion > div a:hover, 
+#contenedor-cambio-contrasenia > div a:hover 
+{
+    color: #607ec4;
+}
+
+.cambiarContrasenia {
+    display: block;
+    margin-bottom: 1.8%;
+}
+
+/* PC */
+@media screen and (max-width: 1440px) {
+
+    main {
+        width: 30%;
+    }
+
+}
+
+/* Laptop */
+@media screen and (max-width: 1024px) {
+
+    main {
+        width: 40%;
+    }
+
+}
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+
+    main {
+        width: 60%;
+    }
+
+}
+
+/* Móvil */
+@media screen and (max-width: 480px) {
+
+    main {
+        width: 70%;
+    }
+
+}
+
+
