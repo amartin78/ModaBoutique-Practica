@@ -66,6 +66,14 @@ article {
     justify-content: space-evenly;
 }
 
+.marca {
+    cursor: pointer;
+}
+
+.marca img:hover {
+    opacity: 0.8;
+}
+
 .marca img {
     width: 100%;
     margin-bottom: 6%;

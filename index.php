@@ -4,12 +4,9 @@
         <title>Moda Boutique</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="estilos/reset.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-header.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-nav.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-index.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-lista-productos.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-footer.css">
+        <?php 
+            include "includes/estilos.php"
+        ?>
     </head>
     <body>
         <div id="contenedor">
@@ -33,7 +30,7 @@
                         <img src="img/marcas/woman.webp" alt="woman">
                         <h2>ZARA</h2>
                         <p>
-                            Todo un clásico de otoño
+                            Todo un clásico de otoño - lo mejor
                         </p>
                         <a href="productos-mujer.php">Descubrir</a>
                     </div>

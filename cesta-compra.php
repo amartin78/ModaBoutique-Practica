@@ -4,12 +4,10 @@
         <title>Moda Boutique</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="estilos/reset.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-header.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-nav.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-index.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-cesta-compra.css">
-        <link rel="stylesheet" type="text/css" href="estilos/estilos-footer.css">
+        <?php 
+            include "includes/estilos.php"
+        ?>
+        <link rel="stylesheet" type="text/css" href="estilos/cesta-compra.css">
     </head>
     <body>
         <div id="contenedor">
