@@ -1,7 +1,6 @@
 #contenedor-productos {
     display: grid;
     grid-template-columns: repeat(4, 19%);
-    grid-template-rows: repeat(3, 1fr);
     justify-content: space-evenly;
 }
 
@@ -54,7 +53,6 @@
     #contenedor-productos {
         display: grid;
         grid-template-columns: repeat(3, 30%);
-        grid-template-rows: repeat(4, 1fr);
     }
 }
 
@@ -62,7 +60,6 @@
     #contenedor-productos {
         display: grid;
         grid-template-columns: repeat(2, 46%);
-        grid-template-rows: repeat(6, 1fr);
     }
 }
 

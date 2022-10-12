@@ -35,7 +35,7 @@
                             <p>
                                 Todo un clásico de otoño - lo mejor
                             </p>
-                            <a href="productos-mujer.php">Descubrir</a>
+                            <a href="productos.php?mujer">Descubrir</a>
                         </div>
                     </article>
                     <article class="marca">
@@ -45,7 +45,7 @@
                             <p>
                                 Descubre la nueva colección de otoño - invierno 2022
                             </p>
-                            <a href="productos-hombre.php">Comprar</a>
+                            <a href="productos.php?hombre">Comprar</a>
                         </div>
                     </article>
                     <article class="marca">
@@ -55,7 +55,7 @@
                             <p>
                                 Inspirado en aromas naturales
                             </p>
-                            <a href="productos-belleza.php">Descubrir</a>
+                            <a href="productos.php?belleza">Descubrir</a>
                         </div>
                     </article>
                 </section>

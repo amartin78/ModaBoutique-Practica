@@ -8,20 +8,29 @@ if (localStorage.getItem("cestaCompra")) {
     localStorage.setItem("cestaCompra", 0);
 }
 
+function origen(nameElement) {
+    localStorage.setItem("origen", nameElement);
+}
+
 window.onload = function(event) {
     let index = location.toString().lastIndexOf("/");
     let enlaceNavegador = location.toString().slice(index + 1, -4);
+    // alert(enlaceNavegador);
     // Mantiene el color de fondo para el enlace visitado en el navegador, excluye el
     // enlace referencias ubicado en el pie de página.
     if (enlaceNavegador === "")
         document.getElementsByName("index")[0].style.backgroundColor = "#e2e2bc";
         
     if (enlaceNavegador === "index" ||
-        enlaceNavegador === "productos-mujer" || 
-        enlaceNavegador === "productos-hombre" || 
         enlaceNavegador === "productos-belleza" || 
         enlaceNavegador === "contacto")
         document.getElementsByName(enlaceNavegador)[0].style.backgroundColor = "#e2e2bc";
+
+        if (window.location.search == "?mujer") {
+            document.getElementsByName("productos-mujer")[0].style.backgroundColor = "#e2e2bc";
+        } else if (window.location.search == "?hombre") {
+            document.getElementsByName("productos-hombre")[0].style.backgroundColor = "#e2e2bc";
+        }
 
     // Elimina el margen inferior del navegador en la página principal dado que el siguiente
     // elemento es el slider con las imágenes grandes.
@@ -97,40 +106,5 @@ function slider(elemento) {
 }
 
 
-function sliderProducto(elemento) {
-    let index = location.toString().lastIndexOf("-");
-    let origen = location.toString().slice(index + 1, -4);
-
-    imagenes = new Array();
-    switch(origen) {
-        case "mujer":
-            producto = "vestido";
-            break;
-        case "hombre":
-            producto = "camisa-polo";
-            break;
-        case "belleza":
-            producto = "botella";
-            break;
-        default:
-            origen = "mujer";
-            producto = "vestido";
-    }
-
-    imagenes[0] = "img/informacion-producto/" + origen + "/" + producto + "1.png";
-    imagenes[1] = "img/informacion-producto/" + origen + "/" + producto + "2.png";
-    imagenes[2] = "img/informacion-producto/" + origen + "/" + producto + "3.png";
-    imagenes[3] = "img/informacion-producto/" + origen + "/" + producto + "4.png";
-
-    if (elemento.id === "atras" && indice > 0) {
-        indice--;
-        document.getElementById("imagen-ampliada").src = imagenes[indice];
-    } 
-    
-    if (elemento.id === "adelante" && indice < 3) {
-        indice++;
-        document.getElementById("imagen-ampliada").src = imagenes[indice];
-    }
-}
 
 

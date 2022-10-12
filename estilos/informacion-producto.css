@@ -85,7 +85,7 @@
 }
 
 .select-wrap {
-    width: 70%;
+    width: 50%;
     padding: 0.6em;
     text-align: center;
     border: 1px solid black;
@@ -97,6 +97,7 @@
     border: none;
     font-size: 1.05em;
     outline: none;
+    cursor: pointer;
 }
 
 .detalle-producto > ul:nth-of-type(3), .detalle-producto > ul:nth-of-type(4) {
