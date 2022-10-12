@@ -20,37 +20,45 @@
                 <!-- Resalta la cabecera para facilitar la búsqueda de un producto -->
                 <div class="capa"></div>
                 <!-- Slider -->
-                <div class="slider">
-                    <img src="img/slider/izquierda.png" id="atras" alt="atras" onclick="slider(this)">
-                    <img src="img/slider/boutique1.webp" id="imagen-visible" alt="boutique" title="Boutique">
-                    <img src="img/slider/derecha.png" id="adelante"  alt="adelante" onclick="slider(this)">
-                </div>
-                <article>
-                    <div class="marca">
+                <section>
+                    <div class="slider">
+                        <img src="img/slider/izquierda.png" id="atras" alt="atras" onclick="slider(this)">
+                        <img src="img/slider/boutique1.webp" id="imagen-visible" alt="boutique" title="Boutique">
+                        <img src="img/slider/derecha.png" id="adelante"  alt="adelante" onclick="slider(this)">
+                    </div>
+                </section>
+                <section>
+                    <article class="marca">
                         <img src="img/marcas/woman.webp" alt="woman">
-                        <h2>ZARA</h2>
-                        <p>
-                            Todo un clásico de otoño - lo mejor
-                        </p>
-                        <a href="productos-mujer.php">Descubrir</a>
-                    </div>
-                    <div class="marca">
+                        <div class="texto-articulo">
+                            <h2>ZARA</h2>
+                            <p>
+                                Todo un clásico de otoño - lo mejor
+                            </p>
+                            <a href="productos-mujer.php">Descubrir</a>
+                        </div>
+                    </article>
+                    <article class="marca">
                         <img src="img/marcas/man.webp" alt="woman">
+                        <div class="texto-articulo">
                         <h2>COLUMBIA</h2>
-                        <p>
-                            Descubre la nueva colección de otoño - invierno 2022
-                        </p>
-                        <a href="productos-hombre.php">Comprar</a>
-                    </div>
-                    <div class="marca">
+                            <p>
+                                Descubre la nueva colección de otoño - invierno 2022
+                            </p>
+                            <a href="productos-hombre.php">Comprar</a>
+                        </div>
+                    </article>
+                    <article class="marca">
                         <img src="img/marcas/perfume.webp" alt="woman">
-                        <h2>HUGO BOSS</h2>
-                        <p>
-                            Inspirado en aromas naturales
-                        </p>
-                        <a href="productos-belleza.php">Descubrir</a>
-                    </div>
-                </article>
+                        <div class="texto-articulo">
+                            <h2>HUGO BOSS</h2>
+                            <p>
+                                Inspirado en aromas naturales
+                            </p>
+                            <a href="productos-belleza.php">Descubrir</a>
+                        </div>
+                    </article>
+                </section>
             </main>
             <?php
                 include "includes/footer.php";

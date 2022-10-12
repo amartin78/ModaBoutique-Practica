@@ -4,7 +4,6 @@ main {
     display: grid;
     grid-template-columns: 60% 35%;
     justify-content: space-evenly;
-    /* background-color: #eae5e5; */
     background-color: #f2f2f2;
 }
 
@@ -215,6 +214,9 @@ main {
         display: block;
     }
 
+    article {
+        margin-bottom: 0.2em;
+    }
 
     #contenedor-producto, #contenedor-desglose-pago {
         margin: 0.15em 0;
