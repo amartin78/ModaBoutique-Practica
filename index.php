@@ -64,6 +64,6 @@
                 include "includes/footer.php";
             ?>
         </div>
-        <script type="text/javascript" src="js/funciones.js"></script>
+        <script type="text/javascript" src="js/funciones-comunes.js"></script>
     </body>
 </html>

@@ -33,7 +33,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="submit" name="obtenerLink" value="Obtener link">
+                                    <input type="reset" name="obtenerLink" value="Obtener link">
                                 </td>
                             </tr>
                         </table>
@@ -47,6 +47,6 @@
                 include "includes/footer.php";
             ?>
         </div>
-        <script type="text/javascript" src="js/funciones.js"></script>
+        <script type="text/javascript" src="js/funciones-comunes.js"></script>
     </body>
 </html>

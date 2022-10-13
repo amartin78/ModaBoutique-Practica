@@ -7,7 +7,28 @@
         <?php 
             include "includes/estilos.php"
         ?>
-        <link rel="stylesheet" type="text/css" href="estilos/productos.css">
+        <style>
+            section {
+                width: 30%;
+                margin: 6em auto 8em;
+            }
+            section h2 {
+                margin-bottom: 1em;
+            }
+            section a {
+                display: block;
+                text-decoration: none;
+            }
+            section a:hover {
+                text-decoration: underline;
+            }
+            @media screen and (max-width: 520px) {
+                section {
+                    width: 50%;
+                    margin: 4em auto 8em;
+                }
+            }
+        </style>
     </head>
     <body>
         <div id="contenedor">
@@ -20,16 +41,18 @@
             <main>
                 <!-- Resalta la cabecera para facilitar la búsqueda de un producto -->
                 <div class="capa"></div>
-                <!-- Rejilla que contiene todos los productos dispuestos en 4 columnas y 3 filas  -->
-                <div id="contenedor-productos"></div>
+                <section>
+                    <div>
+                        <h2>Se inicia el proceso de compra</h2>
+                        <a href="cesta-compra.php">Volver</a>
+                    </div>
+                </section>
             </main>
             <?php
                 include "includes/footer.php";
             ?>
         </div>
         <script type="text/javascript" src="js/funciones-comunes.js"></script>
-        <script type="text/javascript" src="js/productos-listado.js"></script>
-        <script type="text/javascript" src="js/productos.js"></script>
     </body>
 </html>
 

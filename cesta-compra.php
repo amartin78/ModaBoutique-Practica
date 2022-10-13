@@ -160,7 +160,7 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button onclick="peticionServidor()">Comenzar la compra</button>
+                                <button onclick="comprarProducto()">Comenzar la compra</button>
                             </td>
                         </tr>
                     </table>
@@ -170,28 +170,8 @@
                 include "includes/footer.php";
             ?>
         </div>
-        <script type="text/javascript" src="js/funciones.js"></script>
-        <script type="text/javascript">
-            var codigo = sessionStorage.getItem("codigo");
-            var color = sessionStorage.getItem("color");
-            var talla = sessionStorage.getItem("talla");
-            color = color.charAt(0).toUpperCase() + color.substr(1, color.length);
-
-            for (let i=0; i<3; i++) {
-                document.getElementsByClassName("color")[i].innerHTML = color;
-            }
-            
-            for (let i=0; i<3; i++) {
-                document.getElementsByName("eliminar")[i].onclick = function() {
-                    cestaCompra = localStorage.getItem("cestaCompra");
-                    if (cestaCompra > 0) {
-                        cestaCompra--;
-                        localStorage.setItem("cestaCompra", cestaCompra);
-                        document.getElementById("cesta-compra").innerHTML = cestaCompra;
-                    }
-                };
-            }
-        </script>
+        <script type="text/javascript" src="js/funciones-comunes.js"></script>
+        <script type="text/javascript" src="js/cesta-compra.js"></script>
     </body>
 </html>
 

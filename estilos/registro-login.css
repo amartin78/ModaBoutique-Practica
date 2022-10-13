@@ -52,7 +52,7 @@ input[type="checkbox"] {
     width: 1em;
 }
 
-input[type="submit"] {
+input[type="reset"] {
     width: 8em;
     height: 2.5em;
     color: white;
@@ -60,7 +60,7 @@ input[type="submit"] {
     background-color: #f77613;
 }
 
-input[type="submit"]:hover {
+input[type="reset"]:hover {
     background-color: #e2e2bc;
     cursor: pointer;
 }

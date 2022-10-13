@@ -11,11 +11,22 @@ if (localStorage.getItem("cestaCompra")) {
 function origen(nameElement) {
     localStorage.setItem("origen", nameElement);
 }
-
-window.onload = function(event) {
+window.onload = function() {
+    // Muestra el contenido del enlace de sesión en la cabecera
+    if (sessionStorage.getItem("sesionAbierta") === "true") {
+        // document.getElementById("sesion").innerHTML = "Cerrar sesión";
+        let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
+        nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
+        document.getElementById("sesion").innerHTML = "Hola " + nombre;
+    } else {
+        document.getElementById("sesion").innerHTML = "Iniciar sesión";
+    }
     let index = location.toString().lastIndexOf("/");
     let enlaceNavegador = location.toString().slice(index + 1, -4);
-    // alert(enlaceNavegador);
+    // Elimina el margen inferior del navegador en la página principal dado que el siguiente
+    // elemento es el slider con las imágenes grandes.
+    if (enlaceNavegador === "" || enlaceNavegador === "index")
+        document.getElementsByTagName("nav")[0].style.marginBottom = "0";
     // Mantiene el color de fondo para el enlace visitado en el navegador, excluye el
     // enlace referencias ubicado en el pie de página.
     if (enlaceNavegador === "")
@@ -23,20 +34,24 @@ window.onload = function(event) {
         
     if (enlaceNavegador === "index" ||
         enlaceNavegador === "productos-belleza" || 
-        enlaceNavegador === "contacto")
-        document.getElementsByName(enlaceNavegador)[0].style.backgroundColor = "#e2e2bc";
-
-        if (window.location.search == "?mujer") {
-            document.getElementsByName("productos-mujer")[0].style.backgroundColor = "#e2e2bc";
-        } else if (window.location.search == "?hombre") {
-            document.getElementsByName("productos-hombre")[0].style.backgroundColor = "#e2e2bc";
-        }
-
-    // Elimina el margen inferior del navegador en la página principal dado que el siguiente
-    // elemento es el slider con las imágenes grandes.
-    if (enlaceNavegador === "" || enlaceNavegador === "index")
-        document.getElementsByTagName("nav")[0].style.marginBottom = "0";
+        enlaceNavegador === "contacto") {
+            document.getElementsByName(enlaceNavegador)[0].style.backgroundColor = "#e2e2bc";
+    }
+    let busqueda = window.location.search.substring(1);
+    if (busqueda === "mujer") {
+        document.getElementsByName("productos-mujer")[0].style.backgroundColor = "#e2e2bc";
+    } else if (busqueda === "hombre") {
+        document.getElementsByName("productos-hombre")[0].style.backgroundColor = "#e2e2bc";
+    } else if (busqueda === "belleza") {
+        document.getElementsByName("productos-belleza")[0].style.backgroundColor = "#e2e2bc";
+    }
 };
+
+function cerrarSesion() {
+    if (sessionStorage.getItem("sesionAbierta")) {
+        sessionStorage.setItem("sesionAbierta", "false");
+    }
+}
 
 window.addEventListener("scroll", function() {
     buscar.onblur();  

@@ -1,3 +1,34 @@
+let producto, precio;
+let busqueda = window.location.search.substr(1);
+let resultado = true;
+let contenedor = document.querySelector("#contenedor-productos");
+contenedor.innerHTML = "";
+if (busqueda === "mujer") {
+    producto = productos["mujer"];
+} else if (busqueda === "hombre") {
+    producto = productos["hombre"];
+} else if (busqueda === "belleza") {
+    producto = productos["belleza"];
+} else {
+    resultado = false;
+    console.log("El parámetro de búsqueda recibido es incorrecto.");
+}
+if (resultado) {
+    for (let i = 0; i < producto.prodDisponibles; i++) {
+        // Solo hay 12 precios por categoría de producto
+        if (i < 12) {
+            precio = String(producto.precios[i]).replace(',','.') + "&nbsp;€";
+        // Se asigna un precio por defecto sobrepasados los 12 productos
+        } else {
+            precio = "10,00&nbsp;€"
+        }
+        contenedor.innerHTML += 
+            `<producto-tarjeta codProducto="${producto.codProductos[i]}" marca="${producto.marca}" descripcion="${producto.descripcion}" precio="${precio}" 
+                                precioEnvio="${producto.precioEnvio}" imagen="${producto.imagen}">
+            </producto-tarjeta>`;
+    }
+}
+// Se crea una plantilla de producto 
 let plantilla = document.createElement('template');
 plantilla.innerHTML = `
     <style>
@@ -95,15 +126,12 @@ class Producto extends HTMLElement {
         this.shadowRoot.querySelector("img").title = this.descripcion;
         this.shadowRoot.querySelector("img").alt = this.descripcion;
     }
-
     connectedCallback() {
-
     }
 
     disconnectedCallback() {
-
+        
     }
 }
-
 window.customElements.define('producto-tarjeta', Producto);
 

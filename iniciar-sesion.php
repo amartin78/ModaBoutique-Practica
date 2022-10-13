@@ -23,7 +23,7 @@
                 <!-- Formulario iniciar sesión -->
                 <div id="contenedor-inicio-sesion">
                     <h2>Iniciar sesión</h2>
-                    <form action="" name="inicio-sesion" method="">
+                    <form name="inicio-sesion" method="">
                         <table>
                             <tr>
                                 <td>
@@ -34,12 +34,12 @@
                             <tr>
                                 <td>
                                     <label>Contraseña</label>
-                                    <input type="password" name="contrasenia" placeholder="Mínimo 6 caracteres">
+                                    <input type="password" name="contrasenia" placeholder="Mínimo 6 caracteres" minlength="6">
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="submit" name="iniciarSesion" value="Iniciar sesión">
+                                    <input type="reset" name="login" value="Iniciar sesión" onclick="iniciarSesion()">
                                 </td>
                             </tr>
                         </table>
@@ -54,6 +54,8 @@
                 include "includes/footer.php";
             ?>
         </div>
-        <script type="text/javascript" src="js/funciones.js"></script>
+        <script type="text/javascript" src="js/funciones-comunes.js"></script>
+        <script type="text/javascript" src="js/registro-login.js"></script>
     </body>
 </html>
+

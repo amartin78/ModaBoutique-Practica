@@ -79,6 +79,7 @@ main {
     border: none;
     font-size: 1.05em;
     outline: none;
+    cursor: pointer;
 }
 
 #list-products button {
@@ -87,6 +88,10 @@ main {
     border: none;
     background-color: white;
     padding: 0;
+}
+
+#list-products button:hover {
+    text-decoration: underline;
 }
 
 #contenedor-desglose-pago {

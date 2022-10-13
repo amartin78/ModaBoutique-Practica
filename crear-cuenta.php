@@ -23,7 +23,7 @@
                 <!-- Formulario crear cuenta -->
                 <div id="contenedor-nueva-cuenta">
                     <h2>Crear cuenta</h2>
-                    <form action="" name="crear-cuenta" method="">
+                    <form name="crear-cuenta" method="post">
                         <table>
                             <tr>
                                 <td>
@@ -57,14 +57,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="recibir-publicidad" value="Si"> 
+                                    <input type="checkbox" name="recibir-publicidad" value="si"> 
                                        Me gustaría recibir información en mi correo electrónico acerca de 
                                        publicidad sobre sus productos.
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="submit" name="registrarse" value="Registrarse">
+                                    <input type="reset" name="registrarse1" value="Registrarse" onclick="crearCuenta()">
                                 </td>
                             </tr>
                         </table>
@@ -78,6 +78,7 @@
                 include "includes/footer.php";
             ?>
         </div>
-        <script type="text/javascript" src="js/funciones.js"></script>
+        <script type="text/javascript" src="js/funciones-comunes.js"></script>
+        <script type="text/javascript" src="js/registro-login.js"></script>
     </body>
 </html>
