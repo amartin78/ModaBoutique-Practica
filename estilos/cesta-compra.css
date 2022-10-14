@@ -6,7 +6,7 @@ main {
     justify-content: space-evenly;
     background-color: #f2f2f2;
 }
-
+/* 
 #contenedor-producto, #contenedor-desglose-pago {
     margin: 1.2em 0;
     background-color: white;
@@ -82,7 +82,7 @@ main {
     cursor: pointer;
 }
 
-#list-products button {
+#list-productos button {
     width: fit-content;
     cursor: pointer;
     border: none;
@@ -90,9 +90,9 @@ main {
     padding: 0;
 }
 
-#list-products button:hover {
+#list-productos button:hover {
     text-decoration: underline;
-}
+} */
 
 #contenedor-desglose-pago {
     width: 100%;

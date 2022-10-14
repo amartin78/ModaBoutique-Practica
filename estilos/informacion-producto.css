@@ -63,6 +63,10 @@
     cursor: pointer;
 }
 
+#envio li, #recogida li {
+    display: block;
+}
+
 .color {
     width: 1.2em;
     height: 1.2em;
@@ -90,6 +94,7 @@
     text-align: center;
     border: 1px solid black;
     margin-bottom: 4%;
+    cursor: pointer;
 }
 
 .detalle-producto select {
@@ -109,7 +114,7 @@
     margin-bottom: 0.4em;
 }
 
-#anadirCesta {
+#aniadirCesta {
     width: 80%;
     padding: 0.9em;
     text-align: center;
@@ -119,7 +124,7 @@
     background-color: #f77613;
 }
 
-#anadirCesta:hover {
+#aniadirCesta:hover {
     background-color: #e2e2bc;
     cursor: pointer;
 }
@@ -184,7 +189,7 @@
         width: 60%;
     }
 
-    #anadirCesta {
+    #aniadirCesta {
         width: 42%;
     }
 
@@ -213,7 +218,7 @@
         width: 100%;
     }
 
-    #anadirCesta {
+    #aniadirCesta {
         width: 100%;
     }
 }

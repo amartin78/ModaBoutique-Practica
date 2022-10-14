@@ -1,5 +1,5 @@
 let producto, precio;
-let busqueda = window.location.search.substr(1);
+let busqueda = window.location.search.substring(1);
 let resultado = true;
 let contenedor = document.querySelector("#contenedor-productos");
 contenedor.innerHTML = "";

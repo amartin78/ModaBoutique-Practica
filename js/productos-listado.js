@@ -32,7 +32,9 @@ let productos = {
             ['m','l','xl'], ['xs','s','m','l','xl'], ['xs','s','m','l','xl'], ['s','m','l'],
             ['xs','l','xl'], ['xs','m','l'], ['xs','s','m','l','xl'], ['s','m','l'],
         ],
-        precioEnvio: "Envío por 2&nbsp;€",
+        // precioEnvio: "Envío por 2&nbsp;€",
+        precioEnvioMismoDia: 2,
+        precioEnvioADosDias: 1,
         imagen: "img/moda-mujer/vestido.png",
         imgMiniatura: "img/informacion-producto/mujer/vestido.png"
     },
@@ -65,7 +67,9 @@ let productos = {
             ['xs','m','l','xl'], ['xs','s','m','l','xl'], ['xs','s','m','l','xl'], ['m','l'],
             ['xs','l','xl'], ['xs'], ['xs','s','m','l','xl'], ['m','l'],
         ],
-        precioEnvio: "Envío por 3&nbsp;€",
+        // precioEnvio: "Envío por 3&nbsp;€",
+        precioEnvioMismoDia: 3,
+        precioEnvioADosDias: 2,
         imagen: "img/moda-hombre/camisa-polo.png",
         imgMiniatura: "img/informacion-producto/hombre/camisa-polo.png"
     },
@@ -77,7 +81,7 @@ let productos = {
         ],
         prodDisponibles: 12,
         marca: "Don Algodón",
-        descripcion: "Fragancia aroma clásico 150 ml",
+        descripcion: "Fragancia aroma clásico",
         valoracion: 5,
         valoraciones: 140,
         valoracionMedia: [
@@ -95,7 +99,8 @@ let productos = {
             ['100','150','200'], ['50','100','150'], ['50','100','150','200'], ['50','100','150','200'],
             ['50'], ['500','200'], ['50','100','150','200'], ['150','200']
         ],
-        precioEnvio: "Envío Gratis",
+        precioEnvioMismoDia: 0,
+        precioEnvioADosDias: 0,
         imagen: "img/belleza/botella.png",
         imgMiniatura: "img/informacion-producto/belleza/botella.png"
     }

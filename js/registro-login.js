@@ -12,7 +12,8 @@ function crearCuenta() {
         fechaNacimiento: fNacimiento,
         email: email,
         contrasenia: contrasenia,
-        recibirPublicidad: recibirPublicidad
+        recibirPublicidad: recibirPublicidad,
+        cestaProductos: JSON.stringify([])
     };
 
     if (sessionStorage.getItem("usuarios")) {
@@ -24,6 +25,7 @@ function crearCuenta() {
         sessionStorage.setItem("usuarios", JSON.stringify([usuario]));
         console.log("Primer usuario en sesionStorage " + JSON.parse(sessionStorage.getItem("usuarios")));
     }
+    window.location.href = "iniciar-sesion.php";
 }
 
 function iniciarSesion() {
@@ -31,12 +33,13 @@ function iniciarSesion() {
     let contrasenia = document.getElementsByName("contrasenia")[0].value;
     let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
     let indice = 0;
-    while (indice < usuarios.length) {
+    while (usuarios && indice < usuarios.length) {
         if (email === usuarios[indice].email && contrasenia === usuarios[indice].contrasenia) {
             sessionStorage.setItem("sesionAbierta", "true");
-            console.log(usuarios[indice].nombre + " ha sido autenticado correctamente!");
+            let mensaje = "Bienvenido/a " + usuarios[indice].nombre + "!";
+            alert(mensaje);
             sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarios[indice]));
-            console.log(JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre);
+            // console.log(JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre);
             let origen = window.location.search.substring(1);
             window.location.reload();
             if (origen === "cesta") {
@@ -48,9 +51,14 @@ function iniciarSesion() {
         }
         indice++;
     }
-    if (sessionStorage.getItem("sesionAbierta") === "false") {
-        console.log("Sus datos de identificación no son correctos.");
-        console.log("Inténtelo de nuevo.");
+    if (!usuarios) {
+        console.log("No hay usuarios con los que comprobar el login.");
+    }
+    if (!sessionStorage.getItem("sesionAbierta") || 
+        sessionStorage.getItem("sesionAbierta") === "false") {
+        let mensaje = "Sus datos de identificación no son correctos.\n" + 
+                      "Inténtelo de nuevo o cree una nueva cuenta.";
+        alert(mensaje);
     }
 }
 

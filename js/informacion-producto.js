@@ -4,12 +4,9 @@ let codigoBusqueda = window.location.search.substring(1);
 
 // Guardamos el objeto cuya categoria coincide con la del producto buscado
 // en la página de productos
-for (categoria in productos) {
-    categoriaTemp = categoria.substr(0, 3);
-    if (categoriaBusqueda === categoriaTemp) {
-        producto = productos[categoria];
-    }
-}
+producto = buscarProdPorCategoria(categoriaBusqueda);
+// alert(producto.codProductos.length)
+
 // Guardamos la posición del valor del código de producto correspondiente
 // a la búsqueda para obtener valor de precio, valoracionMedia y totalValoraciones
 let posicion = 0;
@@ -65,7 +62,7 @@ let opt = document.createElement("option");
 if (categoriaBusqueda === "bel") {
     let tamanios = producto.tamaniosDisponibles[posicion];
     tamanio = document.getElementById("talla");
-    opt.value = " ";
+    opt.value = "";
     opt.innerHTML = "Elige un tamaño";
     tamanio.appendChild(opt);
     for (let i = 0; i < tamanios.length; i++) {
@@ -75,9 +72,9 @@ if (categoriaBusqueda === "bel") {
         tamanio.appendChild(opt);
     }
 } else {
-    talla = document.getElementById("talla");
     let tallas = producto.tallasDisponibles[posicion];
-    opt.value = " ";
+    talla = document.getElementById("talla");
+    opt.value = "";
     opt.innerHTML = "Elige una talla";
     talla.appendChild(opt);
     for (let i = 0; i < tallas.length; i++) {
@@ -87,6 +84,27 @@ if (categoriaBusqueda === "bel") {
         talla.appendChild(opt);
     }
 }
+
+// producto = buscarProdPorCategoria(categoriaBusqueda);
+    console.log(producto)
+
+window.onload = function() {
+
+    let precioEnvioMismoDia = producto.precioEnvioMismoDia;
+    let precioEnvioADosDias = producto.precioEnvioADosDias;
+    let entrega1 = document.getElementsByClassName("entrega-rad")[0];
+    precioEnvioMismoDia = precioEnvioMismoDia === 0 ? 
+                          "GRATIS" : 
+                          " por " + precioEnvioMismoDia  + "&nbsp;€";
+    entrega1.innerHTML += "Entrega en el mismo día " + precioEnvioMismoDia;
+    let entrega2 = document.getElementsByClassName("entrega-rad")[1];
+    precioEnvioADosDias = precioEnvioADosDias === 0 ? 
+                          "GRATIS" : 
+                          " por " + precioEnvioADosDias  + "&nbsp;€";
+    entrega2.innerHTML += "Entrega en 2 días " + precioEnvioADosDias;
+}
+
+
 let resenia = remplazarPuntoComa(producto.valoracionMedia[posicion]) + "&nbsp;&nbsp;(" + 
                 remplazarPuntoComa(producto.totalValoraciones[posicion]) + ")";
 let precio = remplazarPuntoComa(producto.precios[posicion]) +
@@ -107,7 +125,6 @@ function valorEstrellas(valoracionMedia) {
     llena = Math.floor(valoracionMedia);
     mitad = Math.ceil(valoracionMedia - llena);
     vacia = Math.floor(5 - valoracionMedia);
-    // console.log(llena + " " + mitad + " " + vacia);
     return [llena, mitad, vacia];
 }
 // Esta función sustituye el punto decimal por una coma
@@ -152,20 +169,89 @@ function ampliarImagen(foto) {
     foto.style.border = "1px solid black";
 }
 function revertirImagen(foto) {
-    foto
-    .style.border = "none";
+    foto.style.border = "none";
 }
-var codigo = "h-camisa-001";
-var color = "azul";
-var talla = "l";
-sessionStorage.setItem("codigo", codigo);
-sessionStorage.setItem("color", color);
-sessionStorage.setItem("talla", talla);
 
-cestaCompra = localStorage.getItem("cestaCompra");
-document.getElementById("anadirCesta").onclick = function () {
-    cestaCompra++;
-    localStorage.setItem("cestaCompra", cestaCompra);
-    document.getElementById("cesta-compra").innerHTML = cestaCompra;
-};
+document.getElementById("aniadirCesta").addEventListener("click", function() {
+
+    // - opcionalmente se dibuja una ventanita con el msj: Ha aniadido a la cesta el si-
+    //   guiente producto: img marca descripcion-producto 
+
+    let talla = document.getElementById("talla").value;
+
+    let entrega = 5, elem = document.getElementsByName("entrega");
+    for (let i = 0; i < elem.length; i++) {
+        if (elem[i].checked) {
+            entrega = i + 1;
+        }
+    }
+
+    let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+    let cestaProductos = JSON.parse(JSON.parse(sessionStorage.getItem("usuarioEnSesion")).cestaProductos);
+    let productoDuplicado = false;
+    let indice1 = 0;
+    while (!productoDuplicado && indice1 < cestaProductos.length) {
+        if (codigoBusqueda === cestaProductos[indice1][0] && 
+            talla === cestaProductos[indice1][1]) {
+            productoDuplicado = true;
+        } 
+        indice1++;
+    }
+
+    let camposValidos = validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega);
+
+    if (camposValidos) {
+        cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega];
+        document.getElementById("cesta-compra").innerHTML = cestaProductos.length;
+        usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
+        sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
+        let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
+        let indice2 = 0;
+        while (usuarios && indice2 < usuarios.length) {
+            if (usuarioEnSesion.email === usuarios[indice2].email && 
+                usuarioEnSesion.contrasenia === usuarios[indice2].contrasenia) {
+                usuarios[indice2] = usuarioEnSesion;
+                sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
+                break;
+            }
+            indice2++;
+        }
+    }
+}); 
+
+function validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega) {
+    let tallaVacia = false, tamanioVacio = false, entregaVacia = false;
+    if (productoDuplicado) {
+        let medida = categoriaBusqueda === "bel" ? "otro tamaño" : "otra talla";
+        let mensaje = "Este producto ya ha sido añadido anteriormente a la cesta\n" + 
+                      "Elija " + medida + " o seleccione un producto diferente";
+        alert(mensaje);
+    } else if (talla === "") {
+        if (categoriaBusqueda === "bel") {
+            tamanioVacio = true;
+            alert("Debe seleccionar un tamaño del producto para añadirlo a la cesta");
+        } else {
+            tallaVacia = true;
+            alert("Debe seleccionar una talla del producto para añadirlo a la cesta");
+        }
+    } else if (entrega === 5) {
+        entregaVacia = true;
+        alert("Debe seleccionar un método de entrega o recogida del producto");
+    }
+
+    return !productoDuplicado && !tallaVacia && !tamanioVacio && !entregaVacia;
+}
+
+function buscarProdPorCategoria() {
+    
+    let producto;
+    for (categoria in productos) {
+        categoriaTemp = categoria.substr(0, 3);
+        if (categoriaBusqueda === categoriaTemp) {
+            producto = productos[categoria];
+        }
+    }
+    return producto;
+}
+
 

@@ -59,18 +59,18 @@
                         <div class="select-wrap">
                             <select id="talla"></select>
                         </div>
-                        <ul>
+                        <ul id="envio">
                             <li><p>Envío a domicilio</p></li>
-                            <li><p><input type="radio" name="entrega" value="envio-mismo-dia">Entrega en el mismo día por 3&nbsp;€</p></li>
-                            <li><p><input type="radio" name="entrega" value="envio-dos-dias-despues">Entrega entre el lunes 5 y el miércoles 7 de septiembre por 2&nbsp;€</p></li>
+                            <li><p class="entrega-rad"><input type="radio" name="entrega" value="envio-mismo-dia"></p></li>
+                            <li><p class="entrega-rad"><input type="radio" name="entrega" value="envio-dos-dias-despues"></p></li>
                         </ul>
-                        <ul>
+                        <ul id="recogida">
                             <li><p>Recogida producto</p></li>
-                            <li><p><input type="radio" name="entrega" value="recogida-en-tienda">Recogida en tienda GRATIS</p></li>
-                            <li><p><input type="radio" name="entrega" value="click-recoger-punto">Click y recoger GRATIS</p></li>
+                            <li><p class="entrega-rad"><input type="radio" name="entrega" value="recogida-en-tienda">Recogida en tienda GRATIS</p></li>
+                            <li><p class="entrega-rad"><input type="radio" name="entrega" value="click-recoger-punto">Click y recoger GRATIS</p></li>
                         </ul>
 
-                        <button id="anadirCesta">AÑADIR A LA CESTA</button>
+                        <button id="aniadirCesta">AÑADIR A LA CESTA</button>
 
                     </div>
                 </div>

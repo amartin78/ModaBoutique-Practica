@@ -21,8 +21,8 @@
                 <!-- Resalta la cabecera para facilitar la búsqueda de un producto -->
                 <div class="capa"></div>
                 <!-- Detalle del producto añadido a la cesta -->
-                <div id="list-products">
-                    <article id="p1">
+                <div id="list-productos">
+                    <!-- <article id="p1">
                         <div id="contenedor-producto">
                             <div class="contenedor-imagen">
                                 <div class="marco-imagen">
@@ -59,8 +59,8 @@
                                 </div>
                             </div>
                         </div>
-                    </article>
-                    <article id="p2">
+                    </article> -->
+                    <!-- <article id="p2">
                         <div id="contenedor-producto">
                             <div class="contenedor-imagen">
                                 <div class="marco-imagen">
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-                    </article>
+                    </article> -->
                 </div>
 
                 <!-- Desglose del pago -->
@@ -148,15 +148,18 @@
                         </tr>
                         <tr>
                             <td>Subtotal</td>
-                            <td>39,26&nbsp;€</td>
+                            <td id="subtotal"></td> 
+                            <!-- 39,26&nbsp;€ -->
                         </tr>
                         <tr>
                             <td>Gastos de envío</td>
-                            <td>0,00&nbsp;€</td>
+                            <td id="gastos-envio"></td>
+                            <!-- 0,00&nbsp;€ -->
                         </tr>
                         <tr>
                             <td>Total (IVA incluido)</td>
-                            <td>39,26&nbsp;€</td>
+                            <td id="total"></td>
+                            <!-- 39,26&nbsp;€ -->
                         </tr>
                         <tr>
                             <td colspan="2">
@@ -171,6 +174,7 @@
             ?>
         </div>
         <script type="text/javascript" src="js/funciones-comunes.js"></script>
+        <script type="text/javascript" src="js/productos-listado.js"></script>
         <script type="text/javascript" src="js/cesta-compra.js"></script>
     </body>
 </html>
