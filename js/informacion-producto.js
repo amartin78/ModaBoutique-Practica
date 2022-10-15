@@ -1,11 +1,12 @@
 let producto;
 let categoriaBusqueda = window.location.search.substring(5, 8);
 let codigoBusqueda = window.location.search.substring(1);
+let sesionAbierta = JSON.parse(sessionStorage.getItem("sesionAbierta"));
 
 window.onload = function() {
 
     // Muestra el contenido del enlace de sesión en la cabecera
-    if (sessionStorage.getItem("sesionAbierta") === "true") {
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
         // document.getElementById("sesion").innerHTML = "Cerrar sesión";
         let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
         nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
@@ -32,7 +33,7 @@ window.onload = function() {
                           " por " + precioEnvioADosDias  + "&nbsp;€";
     entrega2.innerHTML += "Entrega en 2 días " + precioEnvioADosDias;
 
-    if (sessionStorage.getItem("sesionAbierta") === "true") {
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
         
         // Se actualiza el número de productos próximo al icono cesta en la cabecera
         document.getElementById("cesta-compra").innerHTML = numProductosCesta;
@@ -47,8 +48,8 @@ window.onload = function() {
         document.getElementById("cesta-compra").innerHTML = 0;
     }
     document.querySelector("#menu-sesion button").addEventListener("click", function() {
-        if (sessionStorage.getItem("sesionAbierta")) {
-            sessionStorage.setItem("sesionAbierta", "false");
+        if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
+            sessionStorage.setItem("sesionAbierta", JSON.stringify(false));
             window.location.reload();
             window.location.href = "iniciar-sesion.php";
         }
@@ -204,44 +205,57 @@ function revertirImagen(foto) {
     foto.style.border = "none";
 }
 
+// Esta función añadirá un nuevo producto a la cesta. No admite duplicados.
+// Puede tener el mismo código de producto siempre y cuando la talla o tamaño
+// sean distintos.
 document.getElementById("aniadirCesta").addEventListener("click", function() {
-
-    let talla = document.getElementById("talla").value;
-    let entrega = 5, elem = document.getElementsByName("entrega");
-    for (let i = 0; i < elem.length; i++) {
-        if (elem[i].checked) {
-            entrega = i + 1;
-        }
-    }
-    let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
-    let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
-    let productoDuplicado = false;
-    let indice1 = 0;
-    while (!productoDuplicado && indice1 < cestaProductos.length) {
-        if (codigoBusqueda === cestaProductos[indice1][0] && 
-            talla === cestaProductos[indice1][1]) {
-            productoDuplicado = true;
-        } 
-        indice1++;
-    }
-    let camposValidos = validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega);
-    if (camposValidos) {
-        cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega, 1];
-        document.getElementById("cesta-compra").innerHTML = cestaProductos.length;
-        usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
-        sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
-        let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
-        let indice2 = 0;
-        while (usuarios && indice2 < usuarios.length) {
-            if (usuarioEnSesion.email === usuarios[indice2].email && 
-                usuarioEnSesion.contrasenia === usuarios[indice2].contrasenia) {
-                usuarios[indice2] = usuarioEnSesion;
-                sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
-                break;
+    if (sesionAbierta) {
+        let talla = document.getElementById("talla").value;
+        let entrega = 5, elem = document.getElementsByName("entrega");
+        for (let i = 0; i < elem.length; i++) {
+            if (elem[i].checked) {
+                entrega = i + 1;
             }
-            indice2++;
         }
-        alert("Se ha añadido el producto a la cesta!");
+        let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+        let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
+        let productoDuplicado = false;
+        let indice1 = 0;
+        while (!productoDuplicado && indice1 < cestaProductos.length) {
+            if (codigoBusqueda === cestaProductos[indice1][0] && 
+                talla === cestaProductos[indice1][1]) {
+                productoDuplicado = true;
+            } 
+            indice1++;
+        }
+        let camposValidos = validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega);
+        if (camposValidos) {
+            cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega, 1];
+            document.getElementById("cesta-compra").innerHTML = cestaProductos.length;
+            usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
+            sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
+            let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
+            let indice2 = 0;
+            while (usuarios && indice2 < usuarios.length) {
+                if (usuarioEnSesion.email === usuarios[indice2].email && 
+                    usuarioEnSesion.contrasenia === usuarios[indice2].contrasenia) {
+                    usuarios[indice2] = usuarioEnSesion;
+                    sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
+                    break;
+                }
+                indice2++;
+            }
+            let mensaje = "Se ha añadido el producto a la cesta! \n" +
+                          "Puede visualizar sus productos al pulsar el \n" +
+                          "icono de cesta en la parte superior derecha"; 
+            alert(mensaje);
+        }
+    } else {
+        let mensaje = "Debe de iniciar sesión o crear una cuenta \n" + 
+                      "para añadir productos a la cesta de compra.";
+        alert(mensaje);
+        window.location.reload();
+        window.location.href = "iniciar-sesion.php";
     }
 }); 
 

@@ -1,7 +1,7 @@
 window.onload = function() {
 
     // Muestra el contenido del enlace de sesión en la cabecera
-    if (sessionStorage.getItem("sesionAbierta") === "true") {
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
         // document.getElementById("sesion").innerHTML = "Cerrar sesión";
         let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
         nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
@@ -21,11 +21,12 @@ window.onload = function() {
         //             usuarios[indice].contrasenia + " " +
         //             usuarios[indice].cestaProductos);
 
-        if (usuarioEnSesion.email === usuarios[indice].email && 
-            usuarioEnSesion.contrasenia === usuarios[indice].contrasenia) {
+        // Si la sesión esta abierta
+        if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
                 cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
                 if (cestaProductos.length > 0) {
                     document.getElementById("list-productos").innerHTML = "";
+                    // Se procede a pintar cada uno de los productos en su cesta
                     for (let i = 0; i < cestaProductos.length; i++, indice2++) {
                         imprimirFichaProd(cestaProductos[i], indice2);
                     }
@@ -36,7 +37,7 @@ window.onload = function() {
     }
 
     let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
-    if (sessionStorage.getItem("sesionAbierta") === "true") {
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
         // Se actualiza el número de productos próximo al icono cesta en la cabecera
         document.getElementById("cesta-compra").innerHTML = numProductosCesta;
         
@@ -50,8 +51,8 @@ window.onload = function() {
         document.getElementById("cesta-compra").innerHTML = 0;
     }
     document.querySelector("#menu-sesion button").addEventListener("click", function() {
-        if (sessionStorage.getItem("sesionAbierta")) {
-            sessionStorage.setItem("sesionAbierta", "false");
+        if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
+            sessionStorage.setItem("sesionAbierta", JSON.stringify(false));
             window.location.reload();
             window.location.href = "iniciar-sesion.php";
         }
@@ -298,7 +299,6 @@ window.onload = function() {
 
             this.shadowRoot.querySelector(".seleccion").addEventListener("change", function(event) {
                 alert("valor " + event.target.value);
-                // console.log("cesta cantidad " + cestaProductos[17][3]);
             });
         }
         connectedCallback() {
@@ -408,8 +408,8 @@ function imprimirFichaProd(compra, i) {
 }
 
 function comprarProducto() {
-    let sesionAbierta = sessionStorage.getItem("sesionAbierta");
-    if (sesionAbierta === "true") {
+    let sesionAbierta = JSON.parse(sessionStorage.getItem("sesionAbierta"));
+    if (sesionAbierta === true) {
         window.location.href = "./pasarela-de-pago.php";
     } else {
         alert("Debe de autenticarse para comprar un producto");
