@@ -1,17 +1,14 @@
 indice = 0;
-tipoProductos = [["vestido1", "vestido2"], ["camisa1", "camisa2"], ["colonia1", "colonia2"]];
 buscar = document.getElementsByName("buscar")[0];
 
-function origen(nameElement) {
-    localStorage.setItem("origen", nameElement);
-}
 window.onload = function() {
     // Muestra el contenido del enlace de sesión en la cabecera
     if (sessionStorage.getItem("sesionAbierta") === "true") {
         // document.getElementById("sesion").innerHTML = "Cerrar sesión";
         let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
         nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
-        document.getElementById("sesion").innerHTML = "Hola " + nombre;
+        document.getElementById("sesion").innerHTML = "Hola " + nombre + 
+                                                      "<span id=\"flecha\">&#8964;</span>";
     } else {
         document.getElementById("sesion").innerHTML = "Iniciar sesión";
     }
@@ -39,17 +36,32 @@ window.onload = function() {
     } else if (busqueda === "belleza") {
         document.getElementsByName("productos-belleza")[0].style.backgroundColor = "#e2e2bc";
     }
-    // Se actualiza el número de productos próximo al icono cesta en la cabecera
+    
     let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
     let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
-    document.getElementById("cesta-compra").innerHTML = numProductosCesta;
-};
 
-function cerrarSesion() {
-    if (sessionStorage.getItem("sesionAbierta")) {
-        sessionStorage.setItem("sesionAbierta", "false");
+    if (sessionStorage.getItem("sesionAbierta") === "true") {
+        
+        // Se actualiza el número de productos próximo al icono cesta en la cabecera
+        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        
+        document.getElementById("inicioSesion").onmouseover = function() {
+            document.getElementById("menu-sesion").style.display = "block";
+        };
+        document.getElementById("menu-sesion").onmouseleave = function() {
+            document.getElementById("menu-sesion").style.display = "none";
+        };  
+    } else {
+        document.getElementById("cesta-compra").innerHTML = 0;
     }
-}
+    document.querySelector("#menu-sesion button").addEventListener("click", function() {
+        if (sessionStorage.getItem("sesionAbierta")) {
+            sessionStorage.setItem("sesionAbierta", "false");
+            window.location.reload();
+            window.location.href = "iniciar-sesion.php";
+        }
+    });
+};
 
 window.addEventListener("scroll", function() {
     buscar.onblur();  
@@ -117,6 +129,8 @@ function slider(elemento) {
         document.getElementById("imagen-visible").src = imagenes[indice];
     }
 }
+
+
 
 
 

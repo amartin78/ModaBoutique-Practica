@@ -1,16 +1,12 @@
-
 window.onload = function() {
-    // se recorre cada uno de los productos almacenados en la cesta del cliente logueado
-    //  pintar cada producto usando una plantilla
-    //  acumular y almacenar totales
-    // reflejar totales en la tabla correspondiente
 
     // Muestra el contenido del enlace de sesión en la cabecera
     if (sessionStorage.getItem("sesionAbierta") === "true") {
         // document.getElementById("sesion").innerHTML = "Cerrar sesión";
         let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
         nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
-        document.getElementById("sesion").innerHTML = "Hola " + nombre;
+        document.getElementById("sesion").innerHTML = "Hola " + nombre + 
+                                                      "<span id=\"flecha\">&#8964;</span>";
     } else {
         document.getElementById("sesion").innerHTML = "Iniciar sesión";
     }
@@ -19,6 +15,7 @@ window.onload = function() {
     let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
     let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
     let indice = 0;
+    let indice2 = 0;
     while (usuarios && indice < usuarios.length) {
         // console.log(usuarios[indice].email + " " + 
         //             usuarios[indice].contrasenia + " " +
@@ -27,13 +24,38 @@ window.onload = function() {
         if (usuarioEnSesion.email === usuarios[indice].email && 
             usuarioEnSesion.contrasenia === usuarios[indice].contrasenia) {
                 cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
-            for (let i = 0; i < cestaProductos.length; i++) {
-                imprimirFichaProd(cestaProductos[i]);
-            }
-            break;
+                if (cestaProductos.length > 0) {
+                    document.getElementById("list-productos").innerHTML = "";
+                    for (let i = 0; i < cestaProductos.length; i++, indice2++) {
+                        imprimirFichaProd(cestaProductos[i], indice2);
+                    }
+                } 
+                break;
         }
         indice++;
     }
+
+    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
+    if (sessionStorage.getItem("sesionAbierta") === "true") {
+        // Se actualiza el número de productos próximo al icono cesta en la cabecera
+        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        
+        document.getElementById("inicioSesion").onmouseover = function() {
+            document.getElementById("menu-sesion").style.display = "block";
+        };
+        document.getElementById("menu-sesion").onmouseleave = function() {
+            document.getElementById("menu-sesion").style.display = "none";
+        };  
+    } else {
+        document.getElementById("cesta-compra").innerHTML = 0;
+    }
+    document.querySelector("#menu-sesion button").addEventListener("click", function() {
+        if (sessionStorage.getItem("sesionAbierta")) {
+            sessionStorage.setItem("sesionAbierta", "false");
+            window.location.reload();
+            window.location.href = "iniciar-sesion.php";
+        }
+    });
 
     let plantilla = document.createElement("template");
     plantilla.innerHTML = `
@@ -51,7 +73,6 @@ window.onload = function() {
                 margin: 1.2em 0;
                 background-color: white;
             }
-
             #contenedor-producto {
                 display: grid;
                 grid-template-columns: 15% 80%;
@@ -59,61 +80,49 @@ window.onload = function() {
                 justify-content: space-between;
                 align-content: space-between;
             }
-
             .contenedor-imagen {
                 grid-row: 1 / span 2;
                 width: 100%;
                 padding: 4%;
             }
-
-            #p1, #p2 {
+            .p1, .p2 {
                 display: block;
             }
-
             .contenedor-imagen img {
                 background-color: #f2f2f2;
                 width: 100%;
             }
-
             .descripcion-producto-top {
                 margin-top: 3%;
             }
-
             .descripcion-producto-top,
             .descripcion-producto-bottom {
                 margin-right: 3%;
             }
-
             .descripcion-producto-top ul, 
             .descripcion-producto-bottom button {
                 float: left;
             }
-
             .descripcion-producto-top .select-wrap,
             .descripcion-producto-bottom div  {
                 float: right;
             }
-
             .marco-imagen {
                 background-color: #f2f2f2;
-                padding: 22% 2%;
+                padding: 4% 2%;
             }
-
             .descripcion-producto-top h3 {
                 margin-bottom: 4%;
             }
-
             .descripcion-producto-top h4 {
                 margin-bottom: 3%;
             }
-
             .descripcion-producto-top .select-wrap {
                 width: 30%;
                 padding: 0.3em;
                 text-align: center;
                 border: 1px solid black;
             }
-
             .descripcion-producto-top select {
                 width: 100%;
                 border: none;
@@ -121,20 +130,98 @@ window.onload = function() {
                 outline: none;
                 cursor: pointer;
             }
-
-            #list-products button {
+            #eliminar {
                 width: fit-content;
                 cursor: pointer;
                 border: none;
                 background-color: white;
                 padding: 0;
             }
-
-            #list-products button:hover {
+            #eliminar:hover {
                 text-decoration: underline;
             }
+            @media screen and (max-width: 1440px) {
+                #contenedor-producto {
+                    grid-template-columns: 20% 75%;
+                }
+                .marco-imagen {
+                    padding: 4% 2%;
+                }
+            }
+            @media screen and (max-width: 1024px) {
+                .marco-imagen {
+                    padding: 40% 2%;
+                }
+                #contenedor-desglose-pago button {
+                    font-size: 0.95em;
+                }
+            }
+            @media screen and (max-width: 768px) {
+                #contenedor-producto {
+                    grid-template-columns: 30% 65%;
+                }
+                .descripcion-producto-top .select-wrap {
+                    padding: 0;
+                    font-size: 0.9em;
+                }
+                #contenedor-desglose-pago button {
+                    font-size: 0.7em;
+                }
+            }
+            @media screen and (max-width: 600px) {
+                #contenedor-producto {
+                    grid-template-columns: 56% 40%;
+                }
+                .marco-imagen {
+                    padding: 20% 2%;
+                }
+                .descripcion-producto-top ul, 
+                .descripcion-producto-bottom button,
+                .descripcion-producto-top .select-wrap,
+                .descripcion-producto-bottom div {
+                    float: none;
+                }
+                .descripcion-producto-top .select-wrap {
+                    width: 80%;
+                    margin-top: 8%;
+                }
+                .descripcion-producto-bottom {
+                    display: flex;
+                    flex-direction: column-reverse;
+                    margin-bottom: 1em;
+                }
+            }
+            @media screen and (max-width: 480px) {
+                main {
+                    display: block;
+                }
+                article {
+                    margin-bottom: 0.2em;
+                }
+                #contenedor-producto, #contenedor-desglose-pago {
+                    margin: 0.15em 0;
+                }
+                .marco-imagen {
+                    padding: 20% 2%;
+                }
+                .descripcion-producto-top ul, 
+                .descripcion-producto-bottom button,
+                .descripcion-producto-top .select-wrap,
+                .descripcion-producto-bottom div {
+                    float: none;
+                }
+                .descripcion-producto-top .select-wrap {
+                    width: 80%;
+                    margin-top: 8%;
+                }
+                .descripcion-producto-bottom {
+                    display: flex;
+                    flex-direction: column-reverse;
+                    margin-bottom: 1em;
+                }
+            }
         </style>
-        <article id="p1">
+        <article class="p1">
             <div id="contenedor-producto">
                 <div class="contenedor-imagen">
                     <div class="marco-imagen">
@@ -150,7 +237,7 @@ window.onload = function() {
                         <li><p id="entrega"></p></li>
                     </ul>
                     <div class="select-wrap">
-                        <select name="cantidad">
+                        <select id="cantidad" class="seleccion">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -165,7 +252,7 @@ window.onload = function() {
                     </div>
                 </div>
                 <div class="descripcion-producto-bottom">
-                    <button name="eliminar">Eliminar</button>
+                    <button id="eliminar">Eliminar</button>
                     <div>
                         <p id="precio"></p>
                     </div>
@@ -183,6 +270,7 @@ window.onload = function() {
         entrega;
         cantidad;
         precio;
+        indice3;
 
         constructor() {
             super();
@@ -192,13 +280,12 @@ window.onload = function() {
             this.enlaceImg = this.getAttribute("imagen");
             this.marca = this.getAttribute("marca");
             this.descripcion = this.getAttribute("descripcion");
-            // this.color = this.getAttribute("color");
             this.medida = this.getAttribute("medida");
             this.entrega = this.getAttribute("entrega");
-            // this.cantidad = this.getAttribute("cantidad");
             this.precio = this.getAttribute("precio");
             this.precioEnvio = this.getAttribute("precioEnvio");
             this.recogida = this.getAttribute("precioEnvio");
+            this.indice = this.getAttribute("indice");
 
             this.shadowRoot.querySelector(".marco-imagen img").src = this.enlaceImg;
             this.shadowRoot.querySelector("img").title = this.descripcion;
@@ -207,36 +294,25 @@ window.onload = function() {
             this.shadowRoot.querySelector("#descripcion").innerHTML = this.descripcion;
             this.shadowRoot.querySelector("#medida").innerHTML = this.medida;
             this.shadowRoot.querySelector("#entrega").innerHTML = this.entrega;
-            // this.shadowRoot.querySelector("#precioEnvio").innerHTML = this.precioEnvio;
             this.shadowRoot.querySelector("#precio").innerHTML = this.precio;
 
-            // this.shadowRoot.querySelector("#informacion-producto").href += "informacion-producto.php?" + this.codProducto;
-            // this.shadowRoot.querySelector("img").src = this.imagen;
-
-
+            this.shadowRoot.querySelector(".seleccion").addEventListener("change", function(event) {
+                alert("valor " + event.target.value);
+                // console.log("cesta cantidad " + cestaProductos[17][3]);
+            });
         }
         connectedCallback() {
+            console.log("Se añade elemento ");
         }
-    
         disconnectedCallback() {
             
         }
     }
     window.customElements.define('producto-ficha', FichaProducto);
-
-    // Se actualiza el número de productos próximo al icono cesta en la cabecera
-    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
-    document.getElementById("cesta-compra").innerHTML = numProductosCesta;
 }
-
 // Esta función imprime en la página una ficha con los datos del producto recibido
 // como parámetro
-function imprimirFichaProd(compra) {
-
-    // let ficha;
-    // let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
-    // console.log("Usuario " + usuarioEnSesion.nombre + " " + usuarioEnSesion.contrasenia);
-    // console.log("Compra " + compra.length);
+function imprimirFichaProd(compra, i) {
 
     let codigo = compra[0];
     let medida = compra[1].toLowerCase();
@@ -275,12 +351,7 @@ function imprimirFichaProd(compra) {
             medida = "";
     }
 
-
-    // console.log("Usuario " + usuarioEnSesion.nombre + " " + usuarioEnSesion.contrasenia);
-    // console.log("Compra " + codigo + " "  + talla + " "  + entrega + " " + categoria);
-
     let contenedor = document.querySelector("#list-productos");
-    // contenedor.innerHTML = "";
     let resultado = true;
     if (categoria === "muj") {
         producto = productos["mujer"];
@@ -315,20 +386,13 @@ function imprimirFichaProd(compra) {
             entrega = "";
     }
 
-
-    // precio = String(producto.precioEnvioMismoDia).replace(',','.') + "&nbsp;€";
-    // precio = String(producto.precioEnvioADosDias).replace(',','.') + "&nbsp;€";
-            // precioEnvioMismoDia: 2,
-        // precioEnvioADosDias: 1,
     if (resultado) {
         let posicion;
-        for (let i = 0; i < producto.prodDisponibles; i++) {
-            
+        for (let i = 0; i < producto.prodDisponibles; i++) {   
             if (codigo === producto.codProductos[i]) {
                 posicion = i;
             }
         }
-
         // Solo hay 12 precios por categoría de producto
         if (posicion < 12) {
             precio = String(producto.precios[posicion]).replace(',','.') + "&nbsp;€";
@@ -336,14 +400,11 @@ function imprimirFichaProd(compra) {
         } else {
             precio = "10,00&nbsp;€"
         }
-    contenedor.innerHTML += 
-        `<producto-ficha codProducto="${codigo}" marca="${producto.marca}" descripcion="${producto.descripcion}" 
-                         medida="${medida}" entrega="${entrega}" precio="${precio}" 
-                         precioEnvio="${producto.precioEnvio}" imagen="${producto.imagen}">
-        </producto-ficha>`;
+        contenedor.innerHTML += 
+            `<producto-ficha indice="${i}" codProducto="${codigo}" marca="${producto.marca}" descripcion="${producto.descripcion}" 
+                            medida="${medida}" entrega="${entrega}" precio="${precio}" imagen="${producto.imagen}">
+            </producto-ficha>`;
     }
-
-    
 }
 
 function comprarProducto() {
@@ -351,7 +412,7 @@ function comprarProducto() {
     if (sesionAbierta === "true") {
         window.location.href = "./pasarela-de-pago.php";
     } else {
-        console.log("Debe de autenticarse para comprar un producto");
+        alert("Debe de autenticarse para comprar un producto");
         window.location.href = "./iniciar-sesion.php?cesta";
     }
 }
@@ -371,7 +432,18 @@ function eliminarProducto(codProducto) {
     // }
 }
 
+function actualizarImporte(elem) {
+    // const selectElement = document.getElementsByClassName('.cantidad');
+    console.log("selects num " + elem.value);
 
+// selectElement.addEventListener = ("click", (event) => {
+//     console.log(event.target.value);
+// });
+}
+
+function actualizarCestaIcono() {
+
+}
 
 
 

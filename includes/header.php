@@ -9,8 +9,11 @@
     <div class="cuenta-cesta">
         <ul>
             <li><img src="img/cabecera/lupa.png" id="lupa" onclick="verCajaBusqueda()"></li>
-            <li><a href="iniciar-sesion.php"><img src="img/cabecera/usuario.png"> <span id="sesion" onclick="cerrarSesion()"></span></a></li>
+            <li><a id="inicioSesion" href="iniciar-sesion.php"><img src="img/cabecera/usuario.png"> <span id="sesion"></span></a></li>
             <li><a href="cesta-compra.php"><span id="cesta-compra"></span> <img src="img/cabecera/cesta.png"></a></li>
         </ul>
     </div>
 </header>
+<div id="menu-sesion">
+    <button id="cerrar">Cerrar sesión</button>
+</div>

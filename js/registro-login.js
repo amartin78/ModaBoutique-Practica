@@ -13,17 +13,21 @@ function crearCuenta() {
         email: email,
         contrasenia: contrasenia,
         recibirPublicidad: recibirPublicidad,
-        cestaProductos: JSON.stringify([])
+        cestaProductos: JSON.stringify([]),
+        totalProductosCesta: 0,
+        subtotal: 0,
+        totalEnvio: 0,
+        total: 0,
     };
 
     if (sessionStorage.getItem("usuarios")) {
         let usuariosSesion = JSON.parse(sessionStorage.getItem("usuarios"));
         usuariosSesion[usuariosSesion.length] = usuario;
         sessionStorage.setItem("usuarios", JSON.stringify(usuariosSesion));
-        console.log("N usuario en sesionStorage " + JSON.parse(sessionStorage.getItem("usuarios")));
+        // console.log("N usuario en sesionStorage " + JSON.parse(sessionStorage.getItem("usuarios")));
     } else {
         sessionStorage.setItem("usuarios", JSON.stringify([usuario]));
-        console.log("Primer usuario en sesionStorage " + JSON.parse(sessionStorage.getItem("usuarios")));
+        // console.log("Primer usuario en sesionStorage " + JSON.parse(sessionStorage.getItem("usuarios")));
     }
     window.location.href = "iniciar-sesion.php";
 }
@@ -36,10 +40,9 @@ function iniciarSesion() {
     while (usuarios && indice < usuarios.length) {
         if (email === usuarios[indice].email && contrasenia === usuarios[indice].contrasenia) {
             sessionStorage.setItem("sesionAbierta", "true");
-            let mensaje = "Bienvenido/a " + usuarios[indice].nombre + "!";
-            alert(mensaje);
+            // let mensaje = "Hola " + usuarios[indice].nombre + "!";
+            // alert(mensaje);
             sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarios[indice]));
-            // console.log(JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre);
             let origen = window.location.search.substring(1);
             window.location.reload();
             if (origen === "cesta") {

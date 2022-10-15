@@ -2,10 +2,62 @@ let producto;
 let categoriaBusqueda = window.location.search.substring(5, 8);
 let codigoBusqueda = window.location.search.substring(1);
 
+window.onload = function() {
+
+    // Muestra el contenido del enlace de sesión en la cabecera
+    if (sessionStorage.getItem("sesionAbierta") === "true") {
+        // document.getElementById("sesion").innerHTML = "Cerrar sesión";
+        let nombre = JSON.parse(sessionStorage.getItem("usuarioEnSesion")).nombre;
+        nombre = nombre[0].toUpperCase() + nombre.substring(1).toLowerCase();
+        document.getElementById("sesion").innerHTML = "Hola " + nombre + 
+                                                      "<span id=\"flecha\">&#8964;</span>";
+    } else {
+        document.getElementById("sesion").innerHTML = "Iniciar sesión";
+    }
+    // Se actualiza el número de productos próximo al icono cesta en la cabecera
+    let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
+    document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+    // Se carga contenido a los campos de envío a domicilio
+    let precioEnvioMismoDia = producto.precioEnvioMismoDia;
+    let precioEnvioADosDias = producto.precioEnvioADosDias;
+    let entrega1 = document.getElementsByClassName("entrega-rad")[0];
+    precioEnvioMismoDia = precioEnvioMismoDia === 0 ? 
+                          "GRATIS" : 
+                          " por " + precioEnvioMismoDia  + "&nbsp;€";
+    entrega1.innerHTML += "Entrega en el mismo día " + precioEnvioMismoDia;
+    let entrega2 = document.getElementsByClassName("entrega-rad")[1];
+    precioEnvioADosDias = precioEnvioADosDias === 0 ? 
+                          "GRATIS" : 
+                          " por " + precioEnvioADosDias  + "&nbsp;€";
+    entrega2.innerHTML += "Entrega en 2 días " + precioEnvioADosDias;
+
+    if (sessionStorage.getItem("sesionAbierta") === "true") {
+        
+        // Se actualiza el número de productos próximo al icono cesta en la cabecera
+        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        
+        document.getElementById("inicioSesion").onmouseover = function() {
+            document.getElementById("menu-sesion").style.display = "block";
+        };
+        document.getElementById("menu-sesion").onmouseleave = function() {
+            document.getElementById("menu-sesion").style.display = "none";
+        };  
+    } else {
+        document.getElementById("cesta-compra").innerHTML = 0;
+    }
+    document.querySelector("#menu-sesion button").addEventListener("click", function() {
+        if (sessionStorage.getItem("sesionAbierta")) {
+            sessionStorage.setItem("sesionAbierta", "false");
+            window.location.reload();
+            window.location.href = "iniciar-sesion.php";
+        }
+    });
+}
+
 // Guardamos el objeto cuya categoria coincide con la del producto buscado
 // en la página de productos
 producto = buscarProdPorCategoria(categoriaBusqueda);
-// alert(producto.codProductos.length)
 
 // Guardamos la posición del valor del código de producto correspondiente
 // a la búsqueda para obtener valor de precio, valoracionMedia y totalValoraciones
@@ -85,26 +137,6 @@ if (categoriaBusqueda === "bel") {
     }
 }
 
-// producto = buscarProdPorCategoria(categoriaBusqueda);
-    console.log(producto)
-
-window.onload = function() {
-
-    let precioEnvioMismoDia = producto.precioEnvioMismoDia;
-    let precioEnvioADosDias = producto.precioEnvioADosDias;
-    let entrega1 = document.getElementsByClassName("entrega-rad")[0];
-    precioEnvioMismoDia = precioEnvioMismoDia === 0 ? 
-                          "GRATIS" : 
-                          " por " + precioEnvioMismoDia  + "&nbsp;€";
-    entrega1.innerHTML += "Entrega en el mismo día " + precioEnvioMismoDia;
-    let entrega2 = document.getElementsByClassName("entrega-rad")[1];
-    precioEnvioADosDias = precioEnvioADosDias === 0 ? 
-                          "GRATIS" : 
-                          " por " + precioEnvioADosDias  + "&nbsp;€";
-    entrega2.innerHTML += "Entrega en 2 días " + precioEnvioADosDias;
-}
-
-
 let resenia = remplazarPuntoComa(producto.valoracionMedia[posicion]) + "&nbsp;&nbsp;(" + 
                 remplazarPuntoComa(producto.totalValoraciones[posicion]) + ")";
 let precio = remplazarPuntoComa(producto.precios[posicion]) +
@@ -174,20 +206,15 @@ function revertirImagen(foto) {
 
 document.getElementById("aniadirCesta").addEventListener("click", function() {
 
-    // - opcionalmente se dibuja una ventanita con el msj: Ha aniadido a la cesta el si-
-    //   guiente producto: img marca descripcion-producto 
-
     let talla = document.getElementById("talla").value;
-
     let entrega = 5, elem = document.getElementsByName("entrega");
     for (let i = 0; i < elem.length; i++) {
         if (elem[i].checked) {
             entrega = i + 1;
         }
     }
-
     let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
-    let cestaProductos = JSON.parse(JSON.parse(sessionStorage.getItem("usuarioEnSesion")).cestaProductos);
+    let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
     let productoDuplicado = false;
     let indice1 = 0;
     while (!productoDuplicado && indice1 < cestaProductos.length) {
@@ -197,11 +224,9 @@ document.getElementById("aniadirCesta").addEventListener("click", function() {
         } 
         indice1++;
     }
-
     let camposValidos = validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega);
-
     if (camposValidos) {
-        cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega];
+        cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega, 1];
         document.getElementById("cesta-compra").innerHTML = cestaProductos.length;
         usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
         sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
@@ -216,6 +241,7 @@ document.getElementById("aniadirCesta").addEventListener("click", function() {
             }
             indice2++;
         }
+        alert("Se ha añadido el producto a la cesta!");
     }
 }); 
 
@@ -242,7 +268,7 @@ function validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega) 
     return !productoDuplicado && !tallaVacia && !tamanioVacio && !entregaVacia;
 }
 
-function buscarProdPorCategoria() {
+function buscarProdPorCategoria(categoriaBusqueda) {
     
     let producto;
     for (categoria in productos) {

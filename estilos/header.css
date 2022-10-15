@@ -78,6 +78,32 @@ header li:nth-child(3) img {
     vertical-align: bottom;
 }
 
+#menu-sesion {
+    position: absolute;
+    top: 3.4em;
+    right: 6.7em;
+    width: 5em;
+    padding: 0.4em;
+    background-color: white;
+    z-index: 20;
+    cursor: pointer;
+    display: none;
+}
+
+#menu-sesion button {
+    width: fit-content;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    color: #333;
+    padding: 0;
+}
+
+#flecha {
+    vertical-align: super;
+    margin-left: 0.4em;
+}
+
 @media screen and (max-width: 1180px) {
     
     header input {
