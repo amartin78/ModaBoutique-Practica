@@ -13,18 +13,25 @@ if (busqueda === "mujer") {
     resultado = false;
     console.log("El parámetro de búsqueda recibido es incorrecto.");
 }
+
+if (busqueda === "belleza") {
+    precioEnvio = "Envío gratis";
+} else {
+    precioEnvio = "Envío por " + producto.precioEnvioADosDias + "&nbsp;€";
+}
+
 if (resultado) {
     for (let i = 0; i < producto.prodDisponibles; i++) {
         // Solo hay 12 precios por categoría de producto
         if (i < 12) {
-            precio = String(producto.precios[i]).replace(',','.') + "&nbsp;€";
+            precio = String(producto.precios[i]).replace('.',',') + "&nbsp;€";
         // Se asigna un precio por defecto sobrepasados los 12 productos
         } else {
             precio = "10,00&nbsp;€"
         }
         contenedor.innerHTML += 
             `<producto-tarjeta codProducto="${producto.codProductos[i]}" marca="${producto.marca}" descripcion="${producto.descripcion}" precio="${precio}" 
-                                precioEnvio="${producto.precioEnvio}" imagen="${producto.imagen}">
+                                precioEnvio="${precioEnvio}" imagen="${producto.imagen}">
             </producto-tarjeta>`;
     }
 }

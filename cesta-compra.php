@@ -39,21 +39,18 @@
                         <tr>
                             <td>Subtotal</td>
                             <td id="subtotal"></td> 
-                            <!-- 39,26&nbsp;€ -->
                         </tr>
                         <tr>
                             <td>Gastos de envío</td>
                             <td id="gastos-envio"></td>
-                            <!-- 0,00&nbsp;€ -->
                         </tr>
                         <tr>
                             <td>Total (IVA incluido)</td>
                             <td id="total"></td>
-                            <!-- 39,26&nbsp;€ -->
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button onclick="comprarProducto()">Comenzar la compra</button>
+                                <button id="compra">Comenzar la compra</button>
                             </td>
                         </tr>
                     </table>

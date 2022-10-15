@@ -1,3 +1,5 @@
+let subtotal = 0, gastosDeEnvio = 0, total = 0;
+
 window.onload = function() {
 
     // Muestra el contenido del enlace de sesión en la cabecera
@@ -50,6 +52,7 @@ window.onload = function() {
     } else {
         document.getElementById("cesta-compra").innerHTML = 0;
     }
+    // Se termina la sesión 
     document.querySelector("#menu-sesion button").addEventListener("click", function() {
         if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
             sessionStorage.setItem("sesionAbierta", JSON.stringify(false));
@@ -57,6 +60,22 @@ window.onload = function() {
             window.location.href = "iniciar-sesion.php";
         }
     });
+    // Se compra un producto
+    document.querySelector("#compra").addEventListener("click", comprarProducto);
+
+    // Se muestran los importes actualizados en la tabla Total
+    // gastosDeEnvio = 2;
+    if (subtotal >= 100) {
+        gastosDeEnvio = 0;
+    } 
+
+    total = subtotal + gastosDeEnvio;
+    subtotal = subtotal.toFixed(2).replace('.', ',') + "&nbsp;€";
+    gastosDeEnvio = gastosDeEnvio.toFixed(2).replace('.', ',') + "&nbsp;€";
+    total = total.toFixed(2).replace('.', ',') + "&nbsp;€";
+    document.getElementById("subtotal").innerHTML = subtotal;
+    document.getElementById("gastos-envio").innerHTML = gastosDeEnvio;
+    document.getElementById("total").innerHTML = total;
 
     let plantilla = document.createElement("template");
     plantilla.innerHTML = `
@@ -70,11 +89,11 @@ window.onload = function() {
             a, p {
                 line-height: 1.3;
             }
-            #contenedor-producto, #contenedor-desglose-pago {
+            .contenedor-producto, #contenedor-desglose-pago {
                 margin: 1.2em 0;
                 background-color: white;
             }
-            #contenedor-producto {
+            .contenedor-producto {
                 display: grid;
                 grid-template-columns: 15% 80%;
                 grid-template-rows: 70% 16%;
@@ -86,7 +105,7 @@ window.onload = function() {
                 width: 100%;
                 padding: 4%;
             }
-            .p1, .p2 {
+            article {
                 display: block;
             }
             .contenedor-imagen img {
@@ -131,18 +150,18 @@ window.onload = function() {
                 outline: none;
                 cursor: pointer;
             }
-            #eliminar {
+            .eliminar {
                 width: fit-content;
                 cursor: pointer;
                 border: none;
                 background-color: white;
                 padding: 0;
             }
-            #eliminar:hover {
+            .eliminar:hover {
                 text-decoration: underline;
             }
             @media screen and (max-width: 1440px) {
-                #contenedor-producto {
+                .contenedor-producto {
                     grid-template-columns: 20% 75%;
                 }
                 .marco-imagen {
@@ -158,7 +177,7 @@ window.onload = function() {
                 }
             }
             @media screen and (max-width: 768px) {
-                #contenedor-producto {
+                .contenedor-producto {
                     grid-template-columns: 30% 65%;
                 }
                 .descripcion-producto-top .select-wrap {
@@ -170,7 +189,7 @@ window.onload = function() {
                 }
             }
             @media screen and (max-width: 600px) {
-                #contenedor-producto {
+                .contenedor-producto {
                     grid-template-columns: 56% 40%;
                 }
                 .marco-imagen {
@@ -199,7 +218,7 @@ window.onload = function() {
                 article {
                     margin-bottom: 0.2em;
                 }
-                #contenedor-producto, #contenedor-desglose-pago {
+                .contenedor-producto, #contenedor-desglose-pago {
                     margin: 0.15em 0;
                 }
                 .marco-imagen {
@@ -222,8 +241,8 @@ window.onload = function() {
                 }
             }
         </style>
-        <article class="p1">
-            <div id="contenedor-producto">
+        <article>
+            <div class="contenedor-producto">
                 <div class="contenedor-imagen">
                     <div class="marco-imagen">
                         <img src="" alt="" title="">
@@ -231,14 +250,13 @@ window.onload = function() {
                 </div>
                 <div class="descripcion-producto-top">
                     <ul>
-                        <li><h3 id="marca"></h3></li>
-                        <li><h4 id="descripcion"></h4></li>
-                        <li><p class="color"></p></li>
-                        <li><p  id="medida"></p></li>
-                        <li><p id="entrega"></p></li>
+                        <li><h3 class="marca"></h3></li>
+                        <li><h4 class="descripcion"></h4></li>
+                        <li><p  class="medida"></p></li>
+                        <li><p class="entrega"></p></li>
                     </ul>
                     <div class="select-wrap">
-                        <select id="cantidad" class="seleccion">
+                        <select class="cantidad">
                             <option value="1" selected>1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -253,9 +271,9 @@ window.onload = function() {
                     </div>
                 </div>
                 <div class="descripcion-producto-bottom">
-                    <button id="eliminar">Eliminar</button>
+                    <button class="eliminar">Eliminar</button>
                     <div>
-                        <p id="precio"></p>
+                        <p class="precio"></p>
                     </div>
                 </div>
             </div>
@@ -271,7 +289,7 @@ window.onload = function() {
         entrega;
         cantidad;
         precio;
-        indice3;
+        indice;
 
         constructor() {
             super();
@@ -284,21 +302,23 @@ window.onload = function() {
             this.medida = this.getAttribute("medida");
             this.entrega = this.getAttribute("entrega");
             this.precio = this.getAttribute("precio");
-            this.precioEnvio = this.getAttribute("precioEnvio");
-            this.recogida = this.getAttribute("precioEnvio");
             this.indice = this.getAttribute("indice");
 
             this.shadowRoot.querySelector(".marco-imagen img").src = this.enlaceImg;
             this.shadowRoot.querySelector("img").title = this.descripcion;
             this.shadowRoot.querySelector("img").alt = this.descripcion;
-            this.shadowRoot.querySelector("#marca").innerHTML = this.marca;
-            this.shadowRoot.querySelector("#descripcion").innerHTML = this.descripcion;
-            this.shadowRoot.querySelector("#medida").innerHTML = this.medida;
-            this.shadowRoot.querySelector("#entrega").innerHTML = this.entrega;
-            this.shadowRoot.querySelector("#precio").innerHTML = this.precio;
+            this.shadowRoot.querySelector(".marca").innerHTML = this.marca;
+            this.shadowRoot.querySelector(".descripcion").innerHTML = this.descripcion;
+            this.shadowRoot.querySelector(".medida").innerHTML = this.medida;
+            this.shadowRoot.querySelector(".entrega").innerHTML = this.entrega;
+            this.shadowRoot.querySelector(".precio").innerHTML = this.precio;
 
-            this.shadowRoot.querySelector(".seleccion").addEventListener("change", function(event) {
-                alert("valor " + event.target.value);
+            this.shadowRoot.querySelector(".cantidad").addEventListener("change", function(event) {
+                alert("Valor " + event.target.value + ". \nEn construcción.");
+            });
+
+            this.shadowRoot.querySelector(".eliminar").addEventListener("click", function(event) {
+                alert("En construcción.");
             });
         }
         connectedCallback() {
@@ -364,17 +384,17 @@ function imprimirFichaProd(compra, i) {
         console.log("El parámetro de búsqueda recibido es incorrecto.");
     }
 
-    let precioEnvio;
+    let precioEnvio = 0, formato;
     switch (entrega) {
         case 1:
             precioEnvio = producto.precioEnvioMismoDia;
-            precioEnvio = precioEnvio === 0 ? " gratis" : "por " + precioEnvio + "&nbsp;€"
-            entrega = "Envío mismo día " + precioEnvio;
+            formato = precioEnvio === 0 ? " gratis" : "por " + precioEnvio + "&nbsp;€"
+            entrega = "Envío mismo día " + formato;
             break;
         case 2:
             precioEnvio = producto.precioEnvioADosDias;
-            precioEnvio = precioEnvio === 0 ? " gratis" : "por " + precioEnvio + "&nbsp;€"
-            entrega = "Envío en dos días " + precioEnvio;
+            formato = precioEnvio === 0 ? " gratis" : "por " + precioEnvio + "&nbsp;€"
+            entrega = "Envío en dos días " + formato;
             break;
         case 3:
             entrega = "Recogida en tienda gratis"
@@ -395,11 +415,20 @@ function imprimirFichaProd(compra, i) {
         }
         // Solo hay 12 precios por categoría de producto
         if (posicion < 12) {
-            precio = String(producto.precios[posicion]).replace(',','.') + "&nbsp;€";
-        // Se asigna un precio por defecto sobrepasados los 12 productos
+            precio = String(producto.precios[posicion]);
+        // Se asigna un precio por defecto sobrepasados los 12 productos (para testeo)
         } else {
             precio = "10,00&nbsp;€"
         }
+
+        // console.log("Precio de envio es " + precioEnvio);
+        if (precioEnvio > gastosDeEnvio) {
+            gastosDeEnvio = precioEnvio;
+        }
+        // console.log("Gastos de envio son " + gastosDeEnvio);
+        subtotal += parseFloat(precio);
+        precio = precio.replace('.',',') + "&nbsp;€";
+
         contenedor.innerHTML += 
             `<producto-ficha indice="${i}" codProducto="${codigo}" marca="${producto.marca}" descripcion="${producto.descripcion}" 
                             medida="${medida}" entrega="${entrega}" precio="${precio}" imagen="${producto.imagen}">
@@ -416,34 +445,4 @@ function comprarProducto() {
         window.location.href = "./iniciar-sesion.php?cesta";
     }
 }
-
-// Este método elimina un producto del usuario en sesión y actualiza el número 
-// mostrado al lado del icono cesta compra en la cabecera. Se comprueba que positivo.
-function eliminarProducto(codProducto) {
-    // for (let i=0; i<3; i++) {
-    //     document.getElementsByName("eliminar")[i].onclick = function() {
-    //         cestaCompra = localStorage.getItem("cestaCompra");
-    //         if (cestaCompra > 0) {
-    //             cestaCompra--;
-    //             localStorage.setItem("cestaCompra", cestaCompra);
-    //             document.getElementById("cesta-compra").innerHTML = cestaCompra;
-    //         }
-    //     };
-    // }
-}
-
-function actualizarImporte(elem) {
-    // const selectElement = document.getElementsByClassName('.cantidad');
-    console.log("selects num " + elem.value);
-
-// selectElement.addEventListener = ("click", (event) => {
-//     console.log(event.target.value);
-// });
-}
-
-function actualizarCestaIcono() {
-
-}
-
-
 
