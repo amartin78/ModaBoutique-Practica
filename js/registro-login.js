@@ -49,7 +49,6 @@ function iniciarSesion() {
             let origen = location.search.substring(1);
             location.reload();
             if (origen === "cesta") {
-                // alert(location.href);
                 location.href = "pasarela-de-pago.php";
             } else {
                 location.href = "index.php";

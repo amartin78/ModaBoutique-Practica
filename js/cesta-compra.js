@@ -441,7 +441,6 @@ function comprarProducto() {
     if (sesionAbierta === true) {
         location.href = "./pasarela-de-pago.php";
     } else {
-        alert("location " + location)
         alert("Debe de autenticarse para comprar un producto");
         location.href = "./iniciar-sesion.php?cesta";
     }
