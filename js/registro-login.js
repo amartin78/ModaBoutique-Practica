@@ -34,7 +34,7 @@ function crearCuenta() {
     let mensaje = "Hola " + usuario.nombre + "! Te has registrado como nuevo usuario. \n" + 
                   "Inicia sesión y accede a nuestras promociones.";
     alert(mensaje);
-    window.location.href = "iniciar-sesion.php";
+    location.href = "iniciar-sesion.php";
 }
 
 function iniciarSesion() {
@@ -46,12 +46,13 @@ function iniciarSesion() {
         if (email === usuarios[indice].email && contrasenia === usuarios[indice].contrasenia) {
             sessionStorage.setItem("sesionAbierta", JSON.stringify(true));
             sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarios[indice]));
-            let origen = window.location.search.substring(1);
-            window.location.reload();
+            let origen = location.search.substring(1);
+            location.reload();
             if (origen === "cesta") {
-                window.location.href = "pasarela-de-pago.php";
+                // alert(location.href);
+                location.href = "pasarela-de-pago.php";
             } else {
-                window.location.href = "index.php";
+                location.href = "index.php";
             }
             break;
         }

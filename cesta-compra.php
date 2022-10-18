@@ -41,7 +41,9 @@
                             <td id="subtotal"></td> 
                         </tr>
                         <tr>
-                            <td>Gastos de envío</td>
+                            <td>Gastos de envío<br>
+                                <span id="limiteEnvio">(Gratis a partir de 100&nbsp;€)</span>
+                            </td>
                             <td id="gastos-envio"></td>
                         </tr>
                         <tr>

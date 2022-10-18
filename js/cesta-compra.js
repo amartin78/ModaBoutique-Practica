@@ -439,10 +439,11 @@ function imprimirFichaProd(compra, i) {
 function comprarProducto() {
     let sesionAbierta = JSON.parse(sessionStorage.getItem("sesionAbierta"));
     if (sesionAbierta === true) {
-        window.location.href = "./pasarela-de-pago.php";
+        location.href = "./pasarela-de-pago.php";
     } else {
+        alert("location " + location)
         alert("Debe de autenticarse para comprar un producto");
-        window.location.href = "./iniciar-sesion.php?cesta";
+        location.href = "./iniciar-sesion.php?cesta";
     }
 }
 

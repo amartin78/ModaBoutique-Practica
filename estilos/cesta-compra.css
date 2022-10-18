@@ -55,6 +55,10 @@ main {
     margin: 3% auto 0;
 }
 
+#limiteEnvio {
+    font-size: 0.8em;
+}
+
 #contenedor-desglose-pago button {
     width: 90%;
     font-size: 1.1em;
