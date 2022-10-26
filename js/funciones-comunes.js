@@ -35,13 +35,11 @@ window.onload = function() {
     } else if (busqueda === "belleza") {
         document.getElementsByName("productos-belleza")[0].style.backgroundColor = "#e2e2bc";
     }
-    
-    let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
-    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
 
+    let productosCesta = actualizarCesta();
     if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
         // Se actualiza el número de productos próximo al icono cesta en la cabecera
-        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        document.getElementById("cesta-compra").innerHTML = productosCesta;
         document.getElementById("inicioSesion").onmouseover = function() {
             document.getElementById("menu-sesion").style.display = "block";
         };
@@ -125,6 +123,20 @@ function slider(elemento) {
         indice++;
         document.getElementById("imagen-visible").src = imagenes[indice];
     }
+}
+
+function actualizarCesta() {
+    let productosCesta = 0;
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
+        let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+        let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
+        let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
+        for (let i = 0; i < numProductosCesta; i++) {
+            productosCesta += cestaProductos[i][4];
+        }
+    }
+
+    return productosCesta;
 }
 
 

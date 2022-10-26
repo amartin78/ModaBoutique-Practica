@@ -15,10 +15,9 @@ window.onload = function() {
     } else {
         document.getElementById("sesion").innerHTML = "Iniciar sesión";
     }
-    // Se actualiza el número de productos próximo al icono cesta en la cabecera
-    let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
-    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
-    document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+
+    let productosCesta = actualizarCesta();
+    document.getElementById("cesta-compra").innerHTML = productosCesta;
     // Se carga contenido a los campos de envío a domicilio
     let precioEnvioMismoDia = producto.precioEnvioMismoDia;
     let precioEnvioADosDias = producto.precioEnvioADosDias;
@@ -36,7 +35,7 @@ window.onload = function() {
     if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
         
         // Se actualiza el número de productos próximo al icono cesta en la cabecera
-        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        document.getElementById("cesta-compra").innerHTML = productosCesta;
         
         document.getElementById("inicioSesion").onmouseover = function() {
             document.getElementById("menu-sesion").style.display = "block";
@@ -211,6 +210,7 @@ function revertirImagen(foto) {
 document.getElementById("aniadirCesta").addEventListener("click", function() {
     if (sesionAbierta) {
         let talla = document.getElementById("talla").value;
+        let precio = producto.precios[posicion];
         let entrega = 5, elem = document.getElementsByName("entrega");
         for (let i = 0; i < elem.length; i++) {
             if (elem[i].checked) {
@@ -223,15 +223,14 @@ document.getElementById("aniadirCesta").addEventListener("click", function() {
         let indice1 = 0;
         while (!productoDuplicado && indice1 < cestaProductos.length) {
             if (codigoBusqueda === cestaProductos[indice1][0] && 
-                talla === cestaProductos[indice1][1]) {
+                talla === cestaProductos[indice1][2]) {
                 productoDuplicado = true;
             } 
             indice1++;
         }
         let camposValidos = validarSeleccion(categoriaBusqueda, productoDuplicado, talla, entrega);
         if (camposValidos) {
-            cestaProductos[cestaProductos.length] = [codigoBusqueda, talla, entrega, 1];
-            document.getElementById("cesta-compra").innerHTML = cestaProductos.length;
+            cestaProductos[cestaProductos.length] = [codigoBusqueda, precio, talla, entrega, 1];
             usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
             sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
             let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
@@ -239,15 +238,18 @@ document.getElementById("aniadirCesta").addEventListener("click", function() {
             while (usuarios && indice2 < usuarios.length) {
                 if (usuarioEnSesion.email === usuarios[indice2].email && 
                     usuarioEnSesion.contrasenia === usuarios[indice2].contrasenia) {
-                    usuarios[indice2] = usuarioEnSesion;
-                    sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
-                    break;
+                        usuarios[indice2] = usuarioEnSesion;
+                        sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
+                        break;
                 }
                 indice2++;
             }
+            let productosCesta = actualizarCesta();
+            document.getElementById("cesta-compra").innerHTML = productosCesta;
+
             let mensaje = "Se ha añadido el producto a la cesta! \n" +
-                          "Puede visualizar sus productos al pulsar el \n" +
-                          "icono de cesta en la parte superior derecha"; 
+            "Puede visualizar sus productos al pulsar el \n" +
+            "icono de cesta en la parte superior derecha"; 
             alert(mensaje);
         }
     } else {

@@ -17,11 +17,11 @@ window.onload = function() {
     let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
     let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
     let indice = 0;
-    let indice2 = 0;
+    let id = 1;
     while (usuarios && indice < usuarios.length) {
-        // console.log(usuarios[indice].email + " " + 
-        //             usuarios[indice].contrasenia + " " +
-        //             usuarios[indice].cestaProductos);
+        console.log(usuarios[indice].email + " " + 
+                    usuarios[indice].contrasenia + " " +
+                    usuarios[indice].cestaProductos);
 
         // Si la sesión esta abierta
         if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
@@ -29,8 +29,8 @@ window.onload = function() {
                 if (cestaProductos.length > 0) {
                     document.getElementById("list-productos").innerHTML = "";
                     // Se procede a pintar cada uno de los productos en su cesta
-                    for (let i = 0; i < cestaProductos.length; i++, indice2++) {
-                        imprimirFichaProd(cestaProductos[i], indice2);
+                    for (let i = 0; i < cestaProductos.length; i++, id++) {
+                        imprimirFichaProd(cestaProductos[i], id);
                     }
                 } 
                 break;
@@ -38,10 +38,10 @@ window.onload = function() {
         indice++;
     }
 
-    let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
+    let productosCesta = actualizarCesta();
     if (JSON.parse(sessionStorage.getItem("sesionAbierta")) === true) {
         // Se actualiza el número de productos próximo al icono cesta en la cabecera
-        document.getElementById("cesta-compra").innerHTML = numProductosCesta;
+        document.getElementById("cesta-compra").innerHTML = productosCesta;
         
         document.getElementById("inicioSesion").onmouseover = function() {
             document.getElementById("menu-sesion").style.display = "block";
@@ -63,19 +63,7 @@ window.onload = function() {
     // Se compra un producto
     document.querySelector("#compra").addEventListener("click", comprarProducto);
 
-    // Se muestran los importes actualizados en la tabla Total
-    // gastosDeEnvio = 2;
-    if (subtotal >= 100) {
-        gastosDeEnvio = 0;
-    } 
-
-    total = subtotal + gastosDeEnvio;
-    subtotal = subtotal.toFixed(2).replace('.', ',') + "&nbsp;€";
-    gastosDeEnvio = gastosDeEnvio.toFixed(2).replace('.', ',') + "&nbsp;€";
-    total = total.toFixed(2).replace('.', ',') + "&nbsp;€";
-    document.getElementById("subtotal").innerHTML = subtotal;
-    document.getElementById("gastos-envio").innerHTML = gastosDeEnvio;
-    document.getElementById("total").innerHTML = total;
+    actualizarPrecios();
 
     let plantilla = document.createElement("template");
     plantilla.innerHTML = `
@@ -303,6 +291,8 @@ window.onload = function() {
             this.entrega = this.getAttribute("entrega");
             this.precio = this.getAttribute("precio");
             this.indice = this.getAttribute("indice");
+            this.id = "cantidad-" + this.indice;
+            this.numProductos = this.getAttribute("numProductos");
 
             this.shadowRoot.querySelector(".marco-imagen img").src = this.enlaceImg;
             this.shadowRoot.querySelector("img").title = this.descripcion;
@@ -312,9 +302,35 @@ window.onload = function() {
             this.shadowRoot.querySelector(".medida").innerHTML = this.medida;
             this.shadowRoot.querySelector(".entrega").innerHTML = this.entrega;
             this.shadowRoot.querySelector(".precio").innerHTML = this.precio;
+            this.shadowRoot.querySelector("select").id = this.id;
+            this.shadowRoot.querySelector("select").value = this.numProductos;
 
             this.shadowRoot.querySelector(".cantidad").addEventListener("change", function(event) {
-                alert("Valor " + event.target.value + ". \nEn construcción.");
+                let productosCesta = 0;
+                let indice = this.id.substring(this.id.length - 1) - 1;
+                let cantidadProducto = parseInt(event.target.value);
+                let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
+                cestaProductos[indice][4] = cantidadProducto;
+                usuarioEnSesion.cestaProductos = JSON.stringify(cestaProductos);
+                // Se almacenan los datos modificados del usuario logueado
+                sessionStorage.setItem("usuarioEnSesion", JSON.stringify(usuarioEnSesion));
+                // Se actualiza la lista de usuarios almacenados con el usuario logueado
+                let usuarios = JSON.parse(sessionStorage.getItem("usuarios"));
+                let id = 0;
+                while (id < usuarios.length) {
+                    if (usuarioEnSesion.email === usuarios[id].email && 
+                        usuarioEnSesion.contrasenia === usuarios[id].contrasenia) {
+                            usuarios[id] = usuarioEnSesion;
+                            sessionStorage.setItem("usuarios", JSON.stringify(usuarios));
+                            break;
+                    }
+                    id++;
+                }
+                // Se imprime el nuevo número de productos de la cesta al lado del icono
+                productosCesta = actualizarCesta();
+                document.getElementById("cesta-compra").innerHTML = productosCesta;
+                // Se actualiza la tabla de precios
+                actualizarPrecios();
             });
 
             this.shadowRoot.querySelector(".eliminar").addEventListener("click", function(event) {
@@ -322,7 +338,8 @@ window.onload = function() {
             });
         }
         connectedCallback() {
-            console.log("Se añade elemento ");
+            // console.log("Se añade elemento ");
+            // console.log("Indice elemento " + this.shadowRoot.querySelector("select").id);
         }
         disconnectedCallback() {
             
@@ -332,11 +349,14 @@ window.onload = function() {
 }
 // Esta función imprime en la página una ficha con los datos del producto recibido
 // como parámetro
-function imprimirFichaProd(compra, i) {
+function imprimirFichaProd(compra, indice) {
+
+    console.log("producto aniadido " + compra);
 
     let codigo = compra[0];
-    let medida = compra[1].toLowerCase();
-    let entrega = compra[2];
+    let medida = compra[2].toLowerCase();
+    let entrega = compra[3];
+    let numProductos = compra[4];
     let categoria = codigo.substring(4, 7);
 
     switch (medida) {
@@ -430,7 +450,7 @@ function imprimirFichaProd(compra, i) {
         precio = precio.replace('.',',') + "&nbsp;€";
 
         contenedor.innerHTML += 
-            `<producto-ficha indice="${i}" codProducto="${codigo}" marca="${producto.marca}" descripcion="${producto.descripcion}" 
+            `<producto-ficha numProductos="${numProductos}" indice="${indice}" codProducto="${codigo}" marca="${producto.marca}" descripcion="${producto.descripcion}" 
                             medida="${medida}" entrega="${entrega}" precio="${precio}" imagen="${producto.imagen}">
             </producto-ficha>`;
     }
@@ -445,4 +465,51 @@ function comprarProducto() {
         location.href = "./iniciar-sesion.php?cesta";
     }
 }
+
+function actualizarCesta() {
+    let productosCesta = 0;
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
+        let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+        let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
+        let numProductosCesta = JSON.parse(usuarioEnSesion.cestaProductos).length;
+        for (let i = 0; i < numProductosCesta; i++) {
+            productosCesta += cestaProductos[i][4];
+        }
+    }
+
+    return productosCesta;
+}
+
+function actualizarPrecios() {
+
+    if (JSON.parse(sessionStorage.getItem("sesionAbierta"))) {
+        let subtotal = 0;
+        let envio = 0;
+
+        let usuarioEnSesion = JSON.parse(sessionStorage.getItem("usuarioEnSesion"));
+        cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
+
+        // Se muestran los importes actualizados en la tabla Total
+        for (let i = 0; i < cestaProductos.length; i++) {
+            subtotal = subtotal + (cestaProductos[i][1] * cestaProductos[i][4]);
+            console.log("subtotal prod no. " + (i + 1) + " " + subtotal);
+        }
+        
+        if (subtotal >= 100) {
+            envio = 0;
+        } else {
+            envio = gastosDeEnvio;
+        }
+
+        total = subtotal + envio;
+        subtotalFormato = subtotal.toFixed(2).replace('.', ',') + "&nbsp;€";
+        envioFormato = envio.toFixed(2).replace('.', ',') + "&nbsp;€";
+        totalFormato = total.toFixed(2).replace('.', ',') + "&nbsp;€";
+        document.getElementById("subtotal").innerHTML = subtotalFormato;
+        document.getElementById("gastos-envio").innerHTML = envioFormato;
+        document.getElementById("total").innerHTML = totalFormato;
+    }
+    
+}
+
 
