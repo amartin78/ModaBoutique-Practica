@@ -307,7 +307,8 @@ window.onload = function() {
 
             this.shadowRoot.querySelector(".cantidad").addEventListener("change", function(event) {
                 let productosCesta = 0;
-                let indice = this.id.substring(this.id.length - 1) - 1;
+                // let indice = this.id.substring(this.id.length - 1) - 1;
+                let indice = parseInt(this.id.split("-")[1] - 1);
                 let cantidadProducto = parseInt(event.target.value);
                 let cestaProductos = JSON.parse(usuarioEnSesion.cestaProductos);
                 cestaProductos[indice][4] = cantidadProducto;
